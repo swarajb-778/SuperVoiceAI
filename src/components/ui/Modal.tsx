@@ -48,25 +48,25 @@ export function Modal({ isOpen, onClose, title, description, children, size = 'm
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
             className={cn('relative w-full rounded-xl z-10 overflow-hidden', sizes[size], className)}
-            style={{ background: '#0d1518', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}
+            style={{ background: '#292524', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}
           >
             {/* Top accent */}
             <div className="absolute top-0 left-0 right-0 h-[2px]"
-              style={{ background: 'linear-gradient(90deg,#22c55e,#16a34a,#22c55e)' }} />
+              style={{ background: 'linear-gradient(90deg,#f59e0b,#d97706,#f59e0b)' }} />
 
             {(title || description) && (
               <div className="flex items-start justify-between px-5 pt-5 pb-4"
                 style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
                 <div>
-                  {title && <h2 className="text-[14px] font-bold tracking-tight" style={{ color: '#e2e8f0' }}>{title}</h2>}
-                  {description && <p className="text-[12px] mt-0.5" style={{ color: '#4b6070' }}>{description}</p>}
+                  {title && <h2 className="text-[14px] font-bold tracking-tight" style={{ color: '#e7e5e4' }}>{title}</h2>}
+                  {description && <p className="text-[12px] mt-0.5" style={{ color: '#78716c' }}>{description}</p>}
                 </div>
                 <button
                   onClick={onClose}
                   className="ml-4 p-1 rounded-md transition-colors"
-                  style={{ color: '#4b6070' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.color = '#94a3b8'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = '#4b6070'; }}
+                  style={{ color: '#78716c' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = '#78716c'; }}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -76,9 +76,9 @@ export function Modal({ isOpen, onClose, title, description, children, size = 'm
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 p-1 rounded-md transition-colors z-10"
-                style={{ color: '#4b6070' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.color = '#94a3b8'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = '#4b6070'; }}
+                style={{ color: '#78716c' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = '#78716c'; }}
               >
                 <X className="w-4 h-4" />
               </button>

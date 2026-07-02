@@ -16,7 +16,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-[12px] font-semibold mb-1.5" style={{ color: '#94a3b8' }}>
+          <label className="block text-[12px] font-semibold mb-1.5" style={{ color: '#a8a29e' }}>
             {label}
             {props.required && <span className="text-red-400 ml-0.5">*</span>}
           </label>
@@ -28,17 +28,17 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             style={{
               background: 'rgba(255,255,255,0.04)',
               border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.08)',
-              color: '#e2e8f0',
+              color: '#e7e5e4',
               ...style,
             }}
             {...props}
           >
-            {placeholder && <option value="" disabled style={{ background: '#0d1518' }}>{placeholder}</option>}
+            {placeholder && <option value="" disabled style={{ background: '#292524' }}>{placeholder}</option>}
             {options.map((opt) => (
-              <option key={opt.value} value={opt.value} style={{ background: '#0d1518', color: '#e2e8f0' }}>{opt.label}</option>
+              <option key={opt.value} value={opt.value} style={{ background: '#292524', color: '#e7e5e4' }}>{opt.label}</option>
             ))}
           </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: '#4b6070' }} />
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: '#78716c' }} />
         </div>
         {error && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{error}</p>}
       </div>

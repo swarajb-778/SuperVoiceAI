@@ -50,9 +50,9 @@ function LoginForm() {
       <div className="relative">
         <Input label="Password" type={showPassword ? 'text' : 'password'} placeholder="Your password" error={errors.password?.message} {...register('password')} />
         <button type="button" onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-[30px] transition-colors" style={{ color: '#4b6070' }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#94a3b8'; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#4b6070'; }}>
+          className="absolute right-3 top-[30px] transition-colors" style={{ color: '#78716c' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#78716c'; }}>
           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
       </div>
@@ -72,31 +72,31 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex" style={{ background: '#080e10' }}>
+    <div className="min-h-screen flex" style={{ background: '#1c1917' }}>
       {/* Left panel — branding */}
       <div className="hidden lg:flex lg:w-[52%] relative flex-col justify-between p-12 overflow-hidden"
-        style={{ background: 'linear-gradient(135deg,#0a1a10 0%,#080e10 60%,#061209 100%)' }}>
+        style={{ background: 'linear-gradient(135deg,#332a1a 0%,#1c1917 60%,#292013 100%)' }}>
         {/* Decorative glow orbs */}
         <div className="absolute top-[-80px] left-[-80px] w-[400px] h-[400px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle,rgba(34,197,94,0.18) 0%,transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle,rgba(245,158,11,0.18) 0%,transparent 70%)' }} />
         <div className="absolute bottom-[10%] right-[-60px] w-[300px] h-[300px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle,rgba(34,197,94,0.1) 0%,transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle,rgba(245,158,11,0.1) 0%,transparent 70%)' }} />
         {/* Grid overlay */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{ backgroundImage: 'linear-gradient(rgba(34,197,94,1) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,1) 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
+          style={{ backgroundImage: 'linear-gradient(rgba(245,158,11,1) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,1) 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
 
         {/* Logo */}
         <div className="relative z-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)', boxShadow: '0 0 24px rgba(34,197,94,0.45)' }}>
+              style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', boxShadow: '0 0 24px rgba(245,158,11,0.45)' }}>
               <Mic className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f1f5f9' }}>
-                CarBot <span style={{ color: '#4ade80' }}>AI</span>
+              <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f5f5f4' }}>
+                SuperVoice<span style={{ color: '#fbbf24' }}>AI</span>
               </span>
-              <p className="text-[11px] leading-none mt-0.5" style={{ color: '#3d5060' }}>AI Voice Receptionist Platform</p>
+              <p className="text-[11px] leading-none mt-0.5" style={{ color: '#57534e' }}>AI Voice Receptionist Platform</p>
             </div>
           </div>
         </div>
@@ -109,19 +109,19 @@ export default function LoginPage() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
-              style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
-              <Zap className="w-3.5 h-3.5" style={{ color: '#4ade80' }} />
-              <span className="text-[11px] font-semibold" style={{ color: '#4ade80' }}>Powered by GPT-4o Realtime</span>
+              style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}>
+              <Zap className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />
+              <span className="text-[11px] font-semibold" style={{ color: '#fbbf24' }}>Powered by GPT-4o Realtime</span>
             </div>
 
-            <h2 className="text-[36px] font-bold leading-[1.15] tracking-tight mb-4" style={{ color: '#f1f5f9' }}>
+            <h2 className="text-[36px] font-bold leading-[1.15] tracking-tight mb-4" style={{ color: '#f5f5f4' }}>
               Your auto shop&apos;s<br />
-              <span style={{ background: 'linear-gradient(90deg,#4ade80,#bbf7d0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <span style={{ background: 'linear-gradient(90deg,#fbbf24,#fde68a)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 AI receptionist
               </span><br />
               never sleeps.
             </h2>
-            <p className="text-[14px] leading-relaxed mb-10" style={{ color: '#4b6070', maxWidth: '340px' }}>
+            <p className="text-[14px] leading-relaxed mb-10" style={{ color: '#78716c', maxWidth: '340px' }}>
               Handle calls, book appointments, and capture leads automatically — while you focus on fixing cars.
             </p>
 
@@ -130,12 +130,12 @@ export default function LoginPage() {
               {features.map(({ icon: Icon, label, desc }) => (
                 <div key={label} className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.2)' }}>
-                    <Icon className="w-4 h-4" style={{ color: '#4ade80' }} />
+                    style={{ background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                    <Icon className="w-4 h-4" style={{ color: '#fbbf24' }} />
                   </div>
                   <div>
-                    <p className="text-[13px] font-semibold" style={{ color: '#e2e8f0' }}>{label}</p>
-                    <p className="text-[12px]" style={{ color: '#4b6070' }}>{desc}</p>
+                    <p className="text-[13px] font-semibold" style={{ color: '#e7e5e4' }}>{label}</p>
+                    <p className="text-[12px]" style={{ color: '#78716c' }}>{desc}</p>
                   </div>
                 </div>
               ))}
@@ -153,8 +153,8 @@ export default function LoginPage() {
         >
           {stats.map(({ value, label }) => (
             <div key={label} className="text-center">
-              <p className="text-[22px] font-bold" style={{ color: '#4ade80' }}>{value}</p>
-              <p className="text-[11px]" style={{ color: '#4b6070' }}>{label}</p>
+              <p className="text-[22px] font-bold" style={{ color: '#fbbf24' }}>{value}</p>
+              <p className="text-[11px]" style={{ color: '#78716c' }}>{label}</p>
             </div>
           ))}
         </motion.div>
@@ -165,11 +165,11 @@ export default function LoginPage() {
         {/* Mobile logo */}
         <div className="lg:hidden flex flex-col items-center mb-8">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
-            style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)', boxShadow: '0 0 20px rgba(34,197,94,0.4)' }}>
+            style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', boxShadow: '0 0 20px rgba(245,158,11,0.4)' }}>
             <Mic className="w-5 h-5 text-white" />
           </div>
-          <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f1f5f9' }}>
-            CarBot <span style={{ color: '#4ade80' }}>AI</span>
+          <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f5f5f4' }}>
+            SuperVoice<span style={{ color: '#fbbf24' }}>AI</span>
           </span>
         </div>
 
@@ -182,35 +182,35 @@ export default function LoginPage() {
           {/* Trust badges */}
           <div className="flex items-center gap-3 mb-7">
             <div className="flex items-center gap-1.5">
-              <Shield className="w-3.5 h-3.5" style={{ color: '#4ade80' }} />
-              <span className="text-[11px]" style={{ color: '#4b6070' }}>SSL Secured</span>
+              <Shield className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />
+              <span className="text-[11px]" style={{ color: '#78716c' }}>SSL Secured</span>
             </div>
             <div className="w-[1px] h-3" style={{ background: 'rgba(255,255,255,0.1)' }} />
             <div className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" style={{ color: '#4ade80' }} />
-              <span className="text-[11px]" style={{ color: '#4b6070' }}>99.9% Uptime</span>
+              <Clock className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />
+              <span className="text-[11px]" style={{ color: '#78716c' }}>99.9% Uptime</span>
             </div>
           </div>
 
           {/* Card */}
-          <div className="rounded-2xl p-7 relative" style={{ background: '#0d1518', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}>
+          <div className="rounded-2xl p-7 relative" style={{ background: '#292524', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}>
             {/* Top accent */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl" style={{ background: 'linear-gradient(90deg,#22c55e,#16a34a)' }} />
+            <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl" style={{ background: 'linear-gradient(90deg,#f59e0b,#d97706)' }} />
 
-            <h1 className="text-[22px] font-bold tracking-tight mb-1" style={{ color: '#f1f5f9' }}>Welcome back</h1>
-            <p className="text-[13px] mb-6" style={{ color: '#4b6070' }}>Sign in to your CarBot dashboard</p>
+            <h1 className="text-[22px] font-bold tracking-tight mb-1" style={{ color: '#f5f5f4' }}>Welcome back</h1>
+            <p className="text-[13px] mb-6" style={{ color: '#78716c' }}>Sign in to your SuperVoiceAI dashboard</p>
 
             <Suspense fallback={
-              <div className="h-36 flex items-center justify-center text-[13px]" style={{ color: '#4b6070' }}>Loading...</div>
+              <div className="h-36 flex items-center justify-center text-[13px]" style={{ color: '#78716c' }}>Loading...</div>
             }>
               <LoginForm />
             </Suspense>
 
-            <p className="text-center text-[12px] mt-5" style={{ color: '#4b6070' }}>
+            <p className="text-center text-[12px] mt-5" style={{ color: '#78716c' }}>
               Don&apos;t have an account?{' '}
-              <Link href="/signup" className="font-semibold transition-colors" style={{ color: '#4ade80' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#22c55e'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#4ade80'; }}>
+              <Link href="/signup" className="font-semibold transition-colors" style={{ color: '#fbbf24' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#f59e0b'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#fbbf24'; }}>
                 Create one free
               </Link>
             </p>
@@ -219,9 +219,9 @@ export default function LoginPage() {
           {/* Bottom note */}
           <p className="text-center text-[11px] mt-5" style={{ color: '#2d4050' }}>
             By signing in you agree to our{' '}
-            <span style={{ color: '#3d5060' }}>Terms of Service</span>
+            <span style={{ color: '#57534e' }}>Terms of Service</span>
             {' '}&amp;{' '}
-            <span style={{ color: '#3d5060' }}>Privacy Policy</span>
+            <span style={{ color: '#57534e' }}>Privacy Policy</span>
           </p>
         </motion.div>
       </div>

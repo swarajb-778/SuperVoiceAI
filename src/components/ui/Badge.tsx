@@ -20,9 +20,9 @@ interface SimpleBadgeProps {
 
 export function Badge({ children, variant = 'default', dot, className }: SimpleBadgeProps) {
   const styles: Record<string, React.CSSProperties> = {
-    default: { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',   color: '#94a3b8' },
+    default: { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',   color: '#a8a29e' },
     blue:    { background: 'rgba(59,130,246,0.1)',   border: '1px solid rgba(59,130,246,0.2)',    color: '#93c5fd' },
-    green:   { background: 'rgba(34,197,94,0.1)',    border: '1px solid rgba(34,197,94,0.22)',    color: '#4ade80' },
+    green:   { background: 'rgba(245,158,11,0.1)',    border: '1px solid rgba(245,158,11,0.22)',    color: '#fbbf24' },
     yellow:  { background: 'rgba(234,179,8,0.1)',    border: '1px solid rgba(234,179,8,0.2)',     color: '#fde047' },
     red:     { background: 'rgba(239,68,68,0.1)',    border: '1px solid rgba(239,68,68,0.2)',     color: '#fca5a5' },
     purple:  { background: 'rgba(139,92,246,0.1)',   border: '1px solid rgba(139,92,246,0.2)',    color: '#c4b5fd' },
@@ -31,7 +31,7 @@ export function Badge({ children, variant = 'default', dot, className }: SimpleB
   };
 
   const dotColors: Record<string, string> = {
-    default: '#64748b', blue: '#60a5fa', green: '#22c55e',
+    default: '#64748b', blue: '#60a5fa', green: '#f59e0b',
     yellow: '#eab308', red: '#ef4444', purple: '#8b5cf6',
     gray: '#475569', orange: '#f97316',
   };

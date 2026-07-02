@@ -36,7 +36,7 @@ export default function WidgetPage() {
 
   const { register, handleSubmit, reset, control, formState: { errors, isSubmitting } } = useForm<WidgetFormData>({
     resolver: zodResolver(widgetSchema),
-    defaultValues: { position: 'bottom-right', primary_color: '#22c55e', is_active: true },
+    defaultValues: { position: 'bottom-right', primary_color: '#f59e0b', is_active: true },
   });
 
   const load = async () => {
@@ -58,7 +58,7 @@ export default function WidgetPage() {
 
   const openCreate = () => {
     setEditingWidget(null);
-    reset({ position: 'bottom-right', primary_color: '#22c55e', is_active: true, name: 'Main Widget' });
+    reset({ position: 'bottom-right', primary_color: '#f59e0b', is_active: true, name: 'Main Widget' });
     setModalOpen(true);
   };
 
@@ -144,12 +144,12 @@ export default function WidgetPage() {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[13px] font-semibold" style={{ color: '#e2e8f0' }}>{widget.name}</span>
+                      <span className="text-[13px] font-semibold" style={{ color: '#e7e5e4' }}>{widget.name}</span>
                       <Badge variant={widget.is_active ? 'green' : 'gray'}>
                         {widget.is_active ? 'Active' : 'Inactive'}
                       </Badge>
                     </div>
-                    <div className="text-[11px] mt-0.5" style={{ color: '#3d5060' }}>
+                    <div className="text-[11px] mt-0.5" style={{ color: '#57534e' }}>
                       Position: {widget.position} · {widget.total_interactions} interactions
                     </div>
                   </div>
@@ -162,22 +162,22 @@ export default function WidgetPage() {
 
                 <div className="rounded-lg p-3 mb-3" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)' }}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#3d5060' }}>Embed Code</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#57534e' }}>Embed Code</span>
                     <Button
                       variant="ghost"
                       size="sm"
-                      icon={copiedId === widget.id ? <CheckCheck className="w-3.5 h-3.5" style={{ color: '#4ade80' }} /> : <Copy className="w-3.5 h-3.5" />}
+                      icon={copiedId === widget.id ? <CheckCheck className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} /> : <Copy className="w-3.5 h-3.5" />}
                       onClick={() => copyEmbed(widget.id)}
                     >
                       {copiedId === widget.id ? 'Copied' : 'Copy'}
                     </Button>
                   </div>
-                  <pre className="text-[11px] font-mono whitespace-pre-wrap break-all" style={{ color: '#4ade80' }}>
+                  <pre className="text-[11px] font-mono whitespace-pre-wrap break-all" style={{ color: '#fbbf24' }}>
                     {buildEmbedCode(business?.id || '', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000', { position: widget.position })}
                   </pre>
                 </div>
 
-                <div className="flex items-center gap-4 text-[11px]" style={{ color: '#4b6070' }}>
+                <div className="flex items-center gap-4 text-[11px]" style={{ color: '#78716c' }}>
                   <span className="flex items-center gap-1">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: widget.primary_color }} />
                     {widget.primary_color}
@@ -201,10 +201,10 @@ export default function WidgetPage() {
           <div className="grid grid-cols-2 gap-4">
             <Select label="Position" options={WIDGET_POSITIONS.map((p) => ({ value: p.value, label: p.label }))} {...register('position')} />
             <div>
-              <label className="block text-[12px] font-semibold mb-1.5" style={{ color: '#94a3b8' }}>Primary Color</label>
+              <label className="block text-[12px] font-semibold mb-1.5" style={{ color: '#a8a29e' }}>Primary Color</label>
               <div className="flex items-center gap-2">
                 <input type="color" {...register('primary_color')} className="w-10 h-9 rounded-lg cursor-pointer p-1" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }} />
-                <Input {...register('primary_color')} placeholder="#22c55e" className="flex-1" />
+                <Input {...register('primary_color')} placeholder="#f59e0b" className="flex-1" />
               </div>
             </div>
           </div>
@@ -228,7 +228,7 @@ export default function WidgetPage() {
           <div className="flex items-center justify-center py-8">
             <div className="relative">
               <div className="w-64 h-80 rounded-xl flex items-center justify-center text-[13px]"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#3d5060' }}>
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#57534e' }}>
                 Your website here
               </div>
               <div
@@ -245,7 +245,7 @@ export default function WidgetPage() {
       </Modal>
 
       <Modal isOpen={!!deleteId} onClose={() => setDeleteId(null)} title="Delete Widget" size="sm">
-        <p className="text-[13px] mb-5" style={{ color: '#94a3b8' }}>This widget will be deactivated and removed.</p>
+        <p className="text-[13px] mb-5" style={{ color: '#a8a29e' }}>This widget will be deactivated and removed.</p>
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={() => setDeleteId(null)}>Cancel</Button>
           <Button variant="danger" loading={deletingId === deleteId} onClick={() => deleteId && handleDelete(deleteId)}>Delete</Button>

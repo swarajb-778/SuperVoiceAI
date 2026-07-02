@@ -1,4 +1,4 @@
-export const APP_NAME = 'CarBot AI';
+export const APP_NAME = 'SuperVoiceAI';
 export const APP_DESCRIPTION = 'AI Voice Receptionist for Auto Repair Businesses';
 
 export const DAYS_OF_WEEK = [

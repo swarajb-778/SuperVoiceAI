@@ -23,7 +23,7 @@ export function TableHead({ children }: { children: React.ReactNode }) {
 export function TableHeader({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <th className={cn('px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap', className)}
-      style={{ color: '#4b6070' }}>
+      style={{ color: '#78716c' }}>
       {children}
     </th>
   );
@@ -55,7 +55,7 @@ export function TableRow({
 
 export function TableCell({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <td className={cn('px-4 py-3 text-[13px]', className)} style={{ color: '#94a3b8' }}>
+    <td className={cn('px-4 py-3 text-[13px]', className)} style={{ color: '#a8a29e' }}>
       {children}
     </td>
   );

@@ -160,8 +160,8 @@ export default function AppointmentsPage() {
                 {filteredAppointments.map((appt) => (
                   <TableRow key={appt.id}>
                     <TableCell>
-                      <div className="font-medium" style={{ color: '#e2e8f0' }}>{appt.customer_name}</div>
-                      <div className="text-[11px]" style={{ color: '#3d5060' }}>{appt.customer_phone}</div>
+                      <div className="font-medium" style={{ color: '#e7e5e4' }}>{appt.customer_name}</div>
+                      <div className="text-[11px]" style={{ color: '#57534e' }}>{appt.customer_phone}</div>
                     </TableCell>
                     <TableCell>
                       <div className="text-[12px]" style={{ color: '#64748b' }}>
@@ -172,7 +172,7 @@ export default function AppointmentsPage() {
                       <span className="text-[12px]" style={{ color: '#64748b' }}>{(appt as Appointment & { service?: Service }).service?.name || '—'}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-[12px]" style={{ color: '#94a3b8' }}>{formatDateTime(appt.scheduled_at)}</span>
+                      <span className="text-[12px]" style={{ color: '#a8a29e' }}>{formatDateTime(appt.scheduled_at)}</span>
                     </TableCell>
                     <TableCell>
                       <StatusBadge status={appt.status} />
@@ -192,7 +192,7 @@ export default function AppointmentsPage() {
 
             {total > PAGE_SIZE && (
               <div className="flex items-center justify-between mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                <span className="text-[12px]" style={{ color: '#4b6070' }}>
+                <span className="text-[12px]" style={{ color: '#78716c' }}>
                   Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, total)} of {total}
                 </span>
                 <div className="flex gap-2">

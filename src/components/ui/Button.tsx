@@ -13,7 +13,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading, icon, children, disabled, style, ...props }, ref) => {
-    const base = 'inline-flex items-center justify-center gap-1.5 font-semibold transition-all duration-150 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/30 active:scale-[0.98] select-none';
+    const base = 'inline-flex items-center justify-center gap-1.5 font-semibold transition-all duration-150 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 active:scale-[0.98] select-none';
 
     const sizes = {
       sm: 'px-2.5 py-1.5 text-[12px]',
@@ -22,7 +22,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const variantStyles: Record<string, React.CSSProperties> = {
-      primary: { background: 'linear-gradient(135deg,#22c55e,#16a34a)', color: '#fff', boxShadow: '0 1px 2px rgba(22,163,74,0.4), inset 0 1px 0 rgba(255,255,255,0.12)' },
+      primary: { background: 'linear-gradient(135deg,#f59e0b,#d97706)', color: '#fff', boxShadow: '0 1px 2px rgba(217,119,6,0.4), inset 0 1px 0 rgba(255,255,255,0.12)' },
       danger:  { background: 'linear-gradient(135deg,#ef4444,#dc2626)', color: '#fff', boxShadow: '0 1px 2px rgba(239,68,68,0.35)' },
     };
 
@@ -35,11 +35,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const inlineStyle: React.CSSProperties = variant === 'secondary'
-      ? { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1', ...style }
+      ? { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#d6d3d1', ...style }
       : variant === 'ghost'
-      ? { color: '#4b6070', ...style }
+      ? { color: '#78716c', ...style }
       : variant === 'outline'
-      ? { background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)', color: '#4ade80', ...style }
+      ? { background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)', color: '#fbbf24', ...style }
       : { ...variantStyles[variant], ...style };
 
     return (

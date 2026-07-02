@@ -154,21 +154,21 @@ export default function ServicesPage() {
                 style={{ border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.02)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.07)'; }}>
-                <GripVertical className="w-4 h-4 flex-shrink-0" style={{ color: '#2a3f4d' }} />
+                <GripVertical className="w-4 h-4 flex-shrink-0" style={{ color: '#44403c' }} />
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(255,255,255,0.05)', color: '#4b6070' }}>
+                  style={{ background: 'rgba(255,255,255,0.05)', color: '#78716c' }}>
                   <Wrench className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-[13px] font-semibold" style={{ color: '#e2e8f0' }}>{service.name}</span>
+                    <span className="text-[13px] font-semibold" style={{ color: '#e7e5e4' }}>{service.name}</span>
                     {!service.is_active && <Badge variant="gray">Inactive</Badge>}
                   </div>
-                  <div className="text-[11px] mt-0.5" style={{ color: '#3d5060' }}>
+                  <div className="text-[11px] mt-0.5" style={{ color: '#57534e' }}>
                     {service.duration_minutes} min · {formatPrice(service.price_min, service.price_max, service.price_type)}
                   </div>
                   {service.description && (
-                    <div className="text-[11px] mt-0.5 truncate" style={{ color: '#3d5060' }}>{service.description}</div>
+                    <div className="text-[11px] mt-0.5 truncate" style={{ color: '#57534e' }}>{service.description}</div>
                   )}
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -192,23 +192,23 @@ export default function ServicesPage() {
                 disabled={addingSuggested === s.name}
                 className="flex items-start gap-3 p-3 rounded-xl text-left transition-all duration-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.02)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(34,197,94,0.25)'; (e.currentTarget as HTMLElement).style.background = 'rgba(34,197,94,0.04)'; }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,158,11,0.25)'; (e.currentTarget as HTMLElement).style.background = 'rgba(245,158,11,0.04)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.07)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)'; }}
               >
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
-                  style={{ background: 'rgba(255,255,255,0.05)', color: '#4b6070' }}>
+                  style={{ background: 'rgba(255,255,255,0.05)', color: '#78716c' }}>
                   <Wrench className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-[13px] font-semibold" style={{ color: '#e2e8f0' }}>{s.name}</div>
-                  <div className="text-[11px] mt-0.5 truncate" style={{ color: '#3d5060' }}>{s.description}</div>
-                  <div className="text-[11px] font-medium mt-1" style={{ color: '#4ade80' }}>{formatPrice(s.price_min, s.price_max ?? null, s.price_type)} · {s.duration_minutes} min</div>
+                  <div className="text-[13px] font-semibold" style={{ color: '#e7e5e4' }}>{s.name}</div>
+                  <div className="text-[11px] mt-0.5 truncate" style={{ color: '#57534e' }}>{s.description}</div>
+                  <div className="text-[11px] font-medium mt-1" style={{ color: '#fbbf24' }}>{formatPrice(s.price_min, s.price_max ?? null, s.price_type)} · {s.duration_minutes} min</div>
                 </div>
                 <div className="flex-shrink-0">
                   {addingSuggested === s.name ? (
-                    <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'rgba(34,197,94,0.5)', borderTopColor: 'transparent' }} />
+                    <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'rgba(245,158,11,0.5)', borderTopColor: 'transparent' }} />
                   ) : (
-                    <Plus className="w-4 h-4" style={{ color: '#3d5060' }} />
+                    <Plus className="w-4 h-4" style={{ color: '#57534e' }} />
                   )}
                 </div>
               </button>
@@ -249,7 +249,7 @@ export default function ServicesPage() {
       </Modal>
 
       <Modal isOpen={!!deleteId} onClose={() => setDeleteId(null)} title="Delete Service" size="sm">
-        <p className="text-[13px] mb-5" style={{ color: '#94a3b8' }}>This service will be removed. Existing appointments will not be affected.</p>
+        <p className="text-[13px] mb-5" style={{ color: '#a8a29e' }}>This service will be removed. Existing appointments will not be affected.</p>
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={() => setDeleteId(null)}>Cancel</Button>
           <Button variant="danger" loading={deletingId === deleteId} onClick={() => deleteId && handleDelete(deleteId)}>Delete</Button>

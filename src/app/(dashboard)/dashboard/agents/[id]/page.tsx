@@ -158,16 +158,16 @@ export default function AgentDetailPage({ params }: PageProps) {
         </Link>
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', color: '#4ade80' }}>
+            style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', color: '#fbbf24' }}>
             <Bot className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-[15px] font-semibold" style={{ color: '#e2e8f0' }}>{agent.name}</h1>
+            <h1 className="text-[15px] font-semibold" style={{ color: '#e7e5e4' }}>{agent.name}</h1>
             <div className="flex items-center gap-1.5">
               <Badge variant={agent.is_active ? 'green' : 'gray'}>
                 {agent.is_active ? 'Active' : 'Inactive'}
               </Badge>
-              <span className="text-[11px]" style={{ color: '#3d5060' }}>Voice: {agent.voice} · {agent.personality}</span>
+              <span className="text-[11px]" style={{ color: '#57534e' }}>Voice: {agent.voice} · {agent.personality}</span>
             </div>
           </div>
         </div>
@@ -185,8 +185,8 @@ export default function AgentDetailPage({ params }: PageProps) {
             onClick={() => setActiveTab(tab.id)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-150"
             style={activeTab === tab.id
-              ? { background: 'rgba(255,255,255,0.1)', color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.1)' }
-              : { color: '#4b6070' }
+              ? { background: 'rgba(255,255,255,0.1)', color: '#e7e5e4', border: '1px solid rgba(255,255,255,0.1)' }
+              : { color: '#78716c' }
             }
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -254,14 +254,14 @@ export default function AgentDetailPage({ params }: PageProps) {
 
                 {/* Agent Info */}
                 <div className="flex items-center gap-3 p-3 rounded-xl mb-5"
-                  style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.12)' }}>
+                  style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.2)', color: '#4ade80' }}>
+                    style={{ background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.2)', color: '#fbbf24' }}>
                     <Bot className="w-5 h-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-[13px] font-semibold" style={{ color: '#e2e8f0' }}>{agent.name}</div>
-                    <div className="text-[11px]" style={{ color: '#4b6070' }}>{agent.voice} voice · {agent.personality}</div>
+                    <div className="text-[13px] font-semibold" style={{ color: '#e7e5e4' }}>{agent.name}</div>
+                    <div className="text-[11px]" style={{ color: '#78716c' }}>{agent.voice} voice · {agent.personality}</div>
                   </div>
                   <Badge variant={agent.is_active ? 'green' : 'gray'}>
                     {agent.is_active ? 'Active' : 'Inactive'}
@@ -275,13 +275,13 @@ export default function AgentDetailPage({ params }: PageProps) {
                       <>
                         <motion.div
                           className="absolute w-36 h-36 rounded-full"
-                          style={{ background: 'rgba(34,197,94,0.12)' }}
+                          style={{ background: 'rgba(245,158,11,0.12)' }}
                           animate={{ scale: [1, 1.3, 1] }}
                           transition={{ duration: 1.5, repeat: Infinity }}
                         />
                         <motion.div
                           className="absolute w-44 h-44 rounded-full"
-                          style={{ background: 'rgba(34,197,94,0.06)' }}
+                          style={{ background: 'rgba(245,158,11,0.06)' }}
                           animate={{ scale: [1, 1.4, 1] }}
                           transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
                         />
@@ -290,7 +290,7 @@ export default function AgentDetailPage({ params }: PageProps) {
                     {connectionState.status === 'listening' && (
                       <motion.div
                         className="absolute w-36 h-36 rounded-full"
-                        style={{ border: '2px solid rgba(34,197,94,0.3)' }}
+                        style={{ border: '2px solid rgba(245,158,11,0.3)' }}
                         animate={{ scale: [1, 1.15, 1], opacity: [0.5, 1, 0.5] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       />
@@ -314,13 +314,13 @@ export default function AgentDetailPage({ params }: PageProps) {
                           : isMuted && isConnected
                           ? { background: 'rgba(255,255,255,0.08)', border: '2px solid rgba(255,255,255,0.12)' }
                           : {
-                              background: 'linear-gradient(135deg,#22c55e,#16a34a)',
-                              boxShadow: '0 0 40px rgba(34,197,94,0.35), 0 0 80px rgba(34,197,94,0.15)',
+                              background: 'linear-gradient(135deg,#f59e0b,#d97706)',
+                              boxShadow: '0 0 40px rgba(245,158,11,0.35), 0 0 80px rgba(245,158,11,0.15)',
                             }
                       }
                     >
                       {connectionState.status === 'connecting' ? (
-                        <Loader2 className="w-10 h-10 animate-spin" style={{ color: '#4ade80' }} />
+                        <Loader2 className="w-10 h-10 animate-spin" style={{ color: '#fbbf24' }} />
                       ) : connectionState.status === 'error' ? (
                         <AlertCircle className="w-10 h-10" style={{ color: '#f87171' }} />
                       ) : isConnected ? (
@@ -339,42 +339,42 @@ export default function AgentDetailPage({ params }: PageProps) {
                   <div className="text-center">
                     {connectionState.status === 'idle' && (
                       <div>
-                        <p className="text-[13px] font-medium" style={{ color: '#94a3b8' }}>Ready to test</p>
-                        <p className="text-[11px] mt-0.5" style={{ color: '#3d5060' }}>Click the mic to start a call</p>
+                        <p className="text-[13px] font-medium" style={{ color: '#a8a29e' }}>Ready to test</p>
+                        <p className="text-[11px] mt-0.5" style={{ color: '#57534e' }}>Click the mic to start a call</p>
                       </div>
                     )}
                     {connectionState.status === 'connecting' && (
-                      <p className="text-[13px] font-medium" style={{ color: '#4ade80' }}>Connecting...</p>
+                      <p className="text-[13px] font-medium" style={{ color: '#fbbf24' }}>Connecting...</p>
                     )}
                     {connectionState.status === 'listening' && (
                       <div className="flex flex-col items-center gap-1">
                         <div className="flex items-center gap-1.5">
                           <motion.div className="w-2 h-2 rounded-full bg-green-500" animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
-                          <span className="text-[13px] font-medium" style={{ color: '#4ade80' }}>Listening</span>
+                          <span className="text-[13px] font-medium" style={{ color: '#fbbf24' }}>Listening</span>
                         </div>
-                        <span className="text-[11px]" style={{ color: '#3d5060' }}>Speak now — the agent is hearing you</span>
+                        <span className="text-[11px]" style={{ color: '#57534e' }}>Speak now — the agent is hearing you</span>
                       </div>
                     )}
                     {connectionState.status === 'speaking' && (
                       <div className="flex flex-col items-center gap-1">
                         <div className="flex items-center gap-1.5">
                           <motion.div className="w-2 h-2 rounded-full bg-green-400" animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 0.8, repeat: Infinity }} />
-                          <span className="text-[13px] font-medium" style={{ color: '#4ade80' }}>Agent Speaking</span>
+                          <span className="text-[13px] font-medium" style={{ color: '#fbbf24' }}>Agent Speaking</span>
                         </div>
-                        <span className="text-[11px]" style={{ color: '#3d5060' }}>The AI is responding</span>
+                        <span className="text-[11px]" style={{ color: '#57534e' }}>The AI is responding</span>
                       </div>
                     )}
                     {connectionState.status === 'error' && (
                       <div>
                         <p className="text-[13px] font-medium" style={{ color: '#f87171' }}>Connection failed</p>
-                        <p className="text-[11px] mt-0.5" style={{ color: '#3d5060' }}>{connectionState.error}</p>
+                        <p className="text-[11px] mt-0.5" style={{ color: '#57534e' }}>{connectionState.error}</p>
                       </div>
                     )}
                   </div>
 
                   {/* Duration */}
                   {isConnected && callDuration > 0 && (
-                    <div className="flex items-center gap-1.5 text-[11px]" style={{ color: '#4b6070' }}>
+                    <div className="flex items-center gap-1.5 text-[11px]" style={{ color: '#78716c' }}>
                       <Clock className="w-3.5 h-3.5" />
                       <span>{formatDuration(callDuration)}</span>
                     </div>
@@ -441,10 +441,10 @@ export default function AgentDetailPage({ params }: PageProps) {
                     <div className="flex flex-col items-center justify-center py-16 text-center">
                       <div className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
                         style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                        <MessageSquare className="w-6 h-6" style={{ color: '#2a3f4d' }} />
+                        <MessageSquare className="w-6 h-6" style={{ color: '#44403c' }} />
                       </div>
-                      <p className="text-[13px] font-medium" style={{ color: '#4b6070' }}>No conversation yet</p>
-                      <p className="text-[11px] mt-1" style={{ color: '#2a3f4d' }}>Start a call to see the transcript in real time</p>
+                      <p className="text-[13px] font-medium" style={{ color: '#78716c' }}>No conversation yet</p>
+                      <p className="text-[11px] mt-1" style={{ color: '#44403c' }}>Start a call to see the transcript in real time</p>
                     </div>
                   ) : (
                     <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1 pb-2">
@@ -458,7 +458,7 @@ export default function AgentDetailPage({ params }: PageProps) {
                         >
                           <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center"
                             style={entry.role === 'assistant'
-                              ? { background: 'rgba(34,197,94,0.15)', color: '#4ade80' }
+                              ? { background: 'rgba(245,158,11,0.15)', color: '#fbbf24' }
                               : { background: 'rgba(255,255,255,0.07)', color: '#64748b' }
                             }>
                             {entry.role === 'assistant'
@@ -468,11 +468,11 @@ export default function AgentDetailPage({ params }: PageProps) {
                           </div>
                           <div className="max-w-[78%] px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed"
                             style={entry.role === 'assistant'
-                              ? { background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.15)', color: '#cbd5e1', borderTopLeftRadius: 4 }
-                              : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', color: '#94a3b8', borderTopRightRadius: 4 }
+                              ? { background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.15)', color: '#d6d3d1', borderTopLeftRadius: 4 }
+                              : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', color: '#a8a29e', borderTopRightRadius: 4 }
                             }>
                             {entry.content}
-                            <div className="text-[10px] mt-1" style={{ color: entry.role === 'assistant' ? 'rgba(74,222,128,0.5)' : 'rgba(148,163,184,0.4)' }}>
+                            <div className="text-[10px] mt-1" style={{ color: entry.role === 'assistant' ? 'rgba(251,191,36,0.5)' : 'rgba(148,163,184,0.4)' }}>
                               {entry.role === 'assistant' ? agent.name : 'You'} · {new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </div>
                           </div>
@@ -483,17 +483,17 @@ export default function AgentDetailPage({ params }: PageProps) {
                       {connectionState.status === 'speaking' && (
                         <div className="flex gap-2.5">
                           <div className="w-7 h-7 rounded-full flex items-center justify-center"
-                            style={{ background: 'rgba(34,197,94,0.15)', color: '#4ade80' }}>
+                            style={{ background: 'rgba(245,158,11,0.15)', color: '#fbbf24' }}>
                             <Bot className="w-3.5 h-3.5" />
                           </div>
                           <div className="px-3.5 py-2.5 rounded-2xl rounded-tl-sm"
-                            style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.15)' }}>
+                            style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.15)' }}>
                             <div className="flex gap-1 items-center h-4">
                               {[0, 0.2, 0.4].map((delay) => (
                                 <motion.div
                                   key={delay}
                                   className="w-1.5 h-1.5 rounded-full"
-                                  style={{ background: '#4ade80' }}
+                                  style={{ background: '#fbbf24' }}
                                   animate={{ y: [0, -4, 0] }}
                                   transition={{ duration: 0.6, repeat: Infinity, delay }}
                                 />
@@ -509,8 +509,8 @@ export default function AgentDetailPage({ params }: PageProps) {
                 {/* Call ended summary */}
                 {!isConnected && transcript.length > 0 && (
                   <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                    <div className="flex items-center gap-2 text-[12px]" style={{ color: '#4b6070' }}>
-                      <CheckCircle2 className="w-4 h-4" style={{ color: '#4ade80' }} />
+                    <div className="flex items-center gap-2 text-[12px]" style={{ color: '#78716c' }}>
+                      <CheckCircle2 className="w-4 h-4" style={{ color: '#fbbf24' }} />
                       <span>Call ended · {transcript.length} messages exchanged · {formatDuration(callDuration)}</span>
                     </div>
                   </div>

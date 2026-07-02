@@ -2,7 +2,6 @@
 
 import { useRef, useCallback, useEffect } from 'react';
 import { useVoiceStore } from '@/store/voice';
-import type { TranscriptEntry } from '@/types';
 
 interface UseRealtimeVoiceOptions {
   businessId: string;

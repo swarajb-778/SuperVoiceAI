@@ -98,7 +98,7 @@ export default function ConversationsPage() {
         </div>
 
         {loading ? (
-          <div className="py-8 text-center text-[13px]" style={{ color: '#3d5060' }}>Loading...</div>
+          <div className="py-8 text-center text-[13px]" style={{ color: '#57534e' }}>Loading...</div>
         ) : filtered.length === 0 ? (
           <EmptyState
             icon={<MessageSquare className="w-5 h-5" />}
@@ -121,8 +121,8 @@ export default function ConversationsPage() {
                 {filtered.map((conv) => (
                   <TableRow key={conv.id} onClick={() => openConversation(conv)}>
                     <TableCell>
-                      <div className="font-medium" style={{ color: '#e2e8f0' }}>{conv.caller_name || 'Unknown'}</div>
-                      <div className="text-[11px]" style={{ color: '#3d5060' }}>{conv.caller_phone || '—'}</div>
+                      <div className="font-medium" style={{ color: '#e7e5e4' }}>{conv.caller_name || 'Unknown'}</div>
+                      <div className="text-[11px]" style={{ color: '#57534e' }}>{conv.caller_phone || '—'}</div>
                     </TableCell>
                     <TableCell><StatusBadge status={conv.status} /></TableCell>
                     <TableCell>
@@ -131,18 +131,18 @@ export default function ConversationsPage() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      {conv.sentiment ? <StatusBadge status={conv.sentiment} /> : <span className="text-[12px]" style={{ color: '#3d5060' }}>—</span>}
+                      {conv.sentiment ? <StatusBadge status={conv.sentiment} /> : <span className="text-[12px]" style={{ color: '#57534e' }}>—</span>}
                     </TableCell>
                     <TableCell>
-                      <span className="text-[12px] font-medium" style={{ color: conv.appointment_booked ? '#4ade80' : '#3d5060' }}>
+                      <span className="text-[12px] font-medium" style={{ color: conv.appointment_booked ? '#fbbf24' : '#57534e' }}>
                         {conv.appointment_booked ? 'Booked' : '—'}
                       </span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-[12px]" style={{ color: '#4b6070' }}>{formatTimeAgo(conv.created_at)}</span>
+                      <span className="text-[12px]" style={{ color: '#78716c' }}>{formatTimeAgo(conv.created_at)}</span>
                     </TableCell>
                     <TableCell>
-                      <ChevronRight className="w-4 h-4" style={{ color: '#2a3f4d' }} />
+                      <ChevronRight className="w-4 h-4" style={{ color: '#44403c' }} />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -151,7 +151,7 @@ export default function ConversationsPage() {
 
             {total > PAGE_SIZE && (
               <div className="flex items-center justify-between mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                <span className="text-[12px]" style={{ color: '#4b6070' }}>
+                <span className="text-[12px]" style={{ color: '#78716c' }}>
                   Page {page + 1} of {Math.ceil(total / PAGE_SIZE)}
                 </span>
                 <div className="flex gap-2">
@@ -172,24 +172,24 @@ export default function ConversationsPage() {
         size="xl"
       >
         {loadingMessages ? (
-          <div className="py-8 text-center text-[13px]" style={{ color: '#4b6070' }}>Loading transcript...</div>
+          <div className="py-8 text-center text-[13px]" style={{ color: '#78716c' }}>Loading transcript...</div>
         ) : messages.length === 0 ? (
-          <div className="py-8 text-center text-[13px]" style={{ color: '#4b6070' }}>No transcript available</div>
+          <div className="py-8 text-center text-[13px]" style={{ color: '#78716c' }}>No transcript available</div>
         ) : (
           <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
             {messages.filter((m) => m.role === 'user' || m.role === 'assistant').map((msg) => (
               <div key={msg.id} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                 <div className="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-semibold"
                   style={msg.role === 'assistant'
-                    ? { background: 'rgba(34,197,94,0.15)', color: '#4ade80' }
-                    : { background: 'rgba(255,255,255,0.08)', color: '#94a3b8' }
+                    ? { background: 'rgba(245,158,11,0.15)', color: '#fbbf24' }
+                    : { background: 'rgba(255,255,255,0.08)', color: '#a8a29e' }
                   }>
                   {msg.role === 'assistant' ? 'AI' : 'C'}
                 </div>
                 <div className="max-w-[80%] px-3 py-2 rounded-xl text-[13px]"
                   style={msg.role === 'assistant'
-                    ? { background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.15)', color: '#cbd5e1', borderTopLeftRadius: 0 }
-                    : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', color: '#94a3b8', borderTopRightRadius: 0 }
+                    ? { background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.15)', color: '#d6d3d1', borderTopLeftRadius: 0 }
+                    : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', color: '#a8a29e', borderTopRightRadius: 0 }
                   }>
                   {msg.content}
                 </div>
@@ -199,8 +199,8 @@ export default function ConversationsPage() {
         )}
         {selectedConv?.summary && (
           <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-            <div className="text-[11px] font-semibold mb-1" style={{ color: '#4b6070' }}>AI Summary</div>
-            <p className="text-[13px]" style={{ color: '#94a3b8' }}>{selectedConv.summary}</p>
+            <div className="text-[11px] font-semibold mb-1" style={{ color: '#78716c' }}>AI Summary</div>
+            <p className="text-[13px]" style={{ color: '#a8a29e' }}>{selectedConv.summary}</p>
           </div>
         )}
       </Modal>

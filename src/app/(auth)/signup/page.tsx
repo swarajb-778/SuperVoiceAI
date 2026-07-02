@@ -20,7 +20,7 @@ const benefits = [
 ];
 
 const testimonial = {
-  quote: 'CarBot handles all our after-hours calls. We went from missing 40% of leads to capturing nearly all of them.',
+  quote: 'SuperVoiceAI handles all our after-hours calls. We went from missing 40% of leads to capturing nearly all of them.',
   author: 'Mike R.',
   role: 'Owner, Premier Auto Repair',
   rating: 5,
@@ -60,29 +60,29 @@ export default function SignupPage() {
 
   if (step === 'success') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#080e10' }}>
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#1c1917' }}>
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full opacity-10"
-            style={{ background: 'radial-gradient(ellipse,#22c55e,transparent 70%)' }} />
+            style={{ background: 'radial-gradient(ellipse,#f59e0b,transparent 70%)' }} />
         </div>
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
           className="rounded-2xl p-10 max-w-[420px] w-full text-center relative"
-          style={{ background: '#0d1518', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
+          style={{ background: '#292524', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
         >
           <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl"
-            style={{ background: 'linear-gradient(90deg,#22c55e,#16a34a)' }} />
+            style={{ background: 'linear-gradient(90deg,#f59e0b,#d97706)' }} />
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5"
-            style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)', color: '#4ade80' }}>
+            style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)', color: '#fbbf24' }}>
             <Mail className="w-7 h-7" />
           </div>
-          <h2 className="text-[20px] font-bold mb-2 tracking-tight" style={{ color: '#f1f5f9' }}>Check your email</h2>
-          <p className="text-[13px] mb-2 leading-relaxed" style={{ color: '#4b6070' }}>
+          <h2 className="text-[20px] font-bold mb-2 tracking-tight" style={{ color: '#f5f5f4' }}>Check your email</h2>
+          <p className="text-[13px] mb-2 leading-relaxed" style={{ color: '#78716c' }}>
             We sent a confirmation link to your email address.
           </p>
-          <p className="text-[13px] mb-7 leading-relaxed" style={{ color: '#4b6070' }}>
+          <p className="text-[13px] mb-7 leading-relaxed" style={{ color: '#78716c' }}>
             Click the link to activate your account and access your dashboard.
           </p>
           <div className="flex flex-col gap-3">
@@ -96,31 +96,31 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#080e10' }}>
+    <div className="min-h-screen flex" style={{ background: '#1c1917' }}>
       {/* Left panel — branding */}
       <div className="hidden lg:flex lg:w-[52%] relative flex-col justify-between p-12 overflow-hidden"
-        style={{ background: 'linear-gradient(135deg,#0a1a10 0%,#080e10 60%,#061209 100%)' }}>
+        style={{ background: 'linear-gradient(135deg,#332a1a 0%,#1c1917 60%,#292013 100%)' }}>
         {/* Decorative glow orbs */}
         <div className="absolute top-[-80px] right-[-40px] w-[350px] h-[350px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle,rgba(34,197,94,0.15) 0%,transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle,rgba(245,158,11,0.15) 0%,transparent 70%)' }} />
         <div className="absolute bottom-[15%] left-[-60px] w-[280px] h-[280px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle,rgba(34,197,94,0.1) 0%,transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle,rgba(245,158,11,0.1) 0%,transparent 70%)' }} />
         {/* Grid overlay */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{ backgroundImage: 'linear-gradient(rgba(34,197,94,1) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,1) 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
+          style={{ backgroundImage: 'linear-gradient(rgba(245,158,11,1) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,1) 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
 
         {/* Logo */}
         <div className="relative z-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)', boxShadow: '0 0 24px rgba(34,197,94,0.45)' }}>
+              style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', boxShadow: '0 0 24px rgba(245,158,11,0.45)' }}>
               <Mic className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f1f5f9' }}>
-                CarBot <span style={{ color: '#4ade80' }}>AI</span>
+              <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f5f5f4' }}>
+                SuperVoice<span style={{ color: '#fbbf24' }}>AI</span>
               </span>
-              <p className="text-[11px] leading-none mt-0.5" style={{ color: '#3d5060' }}>AI Voice Receptionist Platform</p>
+              <p className="text-[11px] leading-none mt-0.5" style={{ color: '#57534e' }}>AI Voice Receptionist Platform</p>
             </div>
           </div>
         </div>
@@ -133,19 +133,19 @@ export default function SignupPage() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
-              style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
-              <Zap className="w-3.5 h-3.5" style={{ color: '#4ade80' }} />
-              <span className="text-[11px] font-semibold" style={{ color: '#4ade80' }}>Join 500+ auto shops today</span>
+              style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}>
+              <Zap className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />
+              <span className="text-[11px] font-semibold" style={{ color: '#fbbf24' }}>Join 500+ auto shops today</span>
             </div>
 
-            <h2 className="text-[36px] font-bold leading-[1.15] tracking-tight mb-4" style={{ color: '#f1f5f9' }}>
+            <h2 className="text-[36px] font-bold leading-[1.15] tracking-tight mb-4" style={{ color: '#f5f5f4' }}>
               Start capturing<br />
-              <span style={{ background: 'linear-gradient(90deg,#4ade80,#bbf7d0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <span style={{ background: 'linear-gradient(90deg,#fbbf24,#fde68a)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 every lead
               </span><br />
               automatically.
             </h2>
-            <p className="text-[14px] leading-relaxed mb-10" style={{ color: '#4b6070', maxWidth: '340px' }}>
+            <p className="text-[14px] leading-relaxed mb-10" style={{ color: '#78716c', maxWidth: '340px' }}>
               Your AI receptionist is live in minutes. No tech skills needed — just paste one line of code into your website.
             </p>
 
@@ -153,10 +153,10 @@ export default function SignupPage() {
             <div className="grid grid-cols-3 gap-4 mb-10">
               {stats.map(({ icon: Icon, value, label }) => (
                 <div key={label} className="rounded-xl p-3 text-center"
-                  style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)' }}>
-                  <Icon className="w-4 h-4 mx-auto mb-1.5" style={{ color: '#4ade80' }} />
-                  <p className="text-[16px] font-bold" style={{ color: '#f1f5f9' }}>{value}</p>
-                  <p className="text-[10px]" style={{ color: '#4b6070' }}>{label}</p>
+                  style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+                  <Icon className="w-4 h-4 mx-auto mb-1.5" style={{ color: '#fbbf24' }} />
+                  <p className="text-[16px] font-bold" style={{ color: '#f5f5f4' }}>{value}</p>
+                  <p className="text-[10px]" style={{ color: '#78716c' }}>{label}</p>
                 </div>
               ))}
             </div>
@@ -165,14 +165,14 @@ export default function SignupPage() {
             <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
               <div className="flex gap-0.5 mb-2">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star key={i} className="w-3 h-3 fill-current" style={{ color: '#4ade80' }} />
+                  <Star key={i} className="w-3 h-3 fill-current" style={{ color: '#fbbf24' }} />
                 ))}
               </div>
-              <p className="text-[12px] leading-relaxed mb-3 italic" style={{ color: '#94a3b8' }}>
+              <p className="text-[12px] leading-relaxed mb-3 italic" style={{ color: '#a8a29e' }}>
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
-              <p className="text-[11px] font-semibold" style={{ color: '#e2e8f0' }}>{testimonial.author}</p>
-              <p className="text-[10px]" style={{ color: '#4b6070' }}>{testimonial.role}</p>
+              <p className="text-[11px] font-semibold" style={{ color: '#e7e5e4' }}>{testimonial.author}</p>
+              <p className="text-[10px]" style={{ color: '#78716c' }}>{testimonial.role}</p>
             </div>
           </motion.div>
         </div>
@@ -185,8 +185,8 @@ export default function SignupPage() {
           className="relative z-10 flex items-center gap-2 pt-6"
           style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <Shield className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#4ade80' }} />
-          <p className="text-[11px]" style={{ color: '#3d5060' }}>
+          <Shield className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#fbbf24' }} />
+          <p className="text-[11px]" style={{ color: '#57534e' }}>
             Your data is encrypted and never shared. Enterprise-grade security by default.
           </p>
         </motion.div>
@@ -197,11 +197,11 @@ export default function SignupPage() {
         {/* Mobile logo */}
         <div className="lg:hidden flex flex-col items-center mb-8">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
-            style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)', boxShadow: '0 0 20px rgba(34,197,94,0.4)' }}>
+            style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', boxShadow: '0 0 20px rgba(245,158,11,0.4)' }}>
             <Mic className="w-5 h-5 text-white" />
           </div>
-          <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f1f5f9' }}>
-            CarBot <span style={{ color: '#4ade80' }}>AI</span>
+          <span className="text-[20px] font-bold tracking-tight" style={{ color: '#f5f5f4' }}>
+            SuperVoice<span style={{ color: '#fbbf24' }}>AI</span>
           </span>
         </div>
 
@@ -215,30 +215,30 @@ export default function SignupPage() {
           <div className="flex items-center gap-2 mb-7">
             <div className="flex items-center gap-1.5">
               <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
-                style={{ background: '#22c55e', color: '#080e10' }}>1</div>
-              <span className="text-[11px] font-medium" style={{ color: '#4ade80' }}>Create account</span>
+                style={{ background: '#f59e0b', color: '#1c1917' }}>1</div>
+              <span className="text-[11px] font-medium" style={{ color: '#fbbf24' }}>Create account</span>
             </div>
             <div className="flex-1 h-[1px]" style={{ background: 'rgba(255,255,255,0.1)' }} />
             <div className="flex items-center gap-1.5">
               <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
-                style={{ background: 'rgba(255,255,255,0.08)', color: '#4b6070' }}>2</div>
-              <span className="text-[11px]" style={{ color: '#4b6070' }}>Configure agent</span>
+                style={{ background: 'rgba(255,255,255,0.08)', color: '#78716c' }}>2</div>
+              <span className="text-[11px]" style={{ color: '#78716c' }}>Configure agent</span>
             </div>
             <div className="flex-1 h-[1px]" style={{ background: 'rgba(255,255,255,0.1)' }} />
             <div className="flex items-center gap-1.5">
               <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
-                style={{ background: 'rgba(255,255,255,0.08)', color: '#4b6070' }}>3</div>
-              <span className="text-[11px]" style={{ color: '#4b6070' }}>Go live</span>
+                style={{ background: 'rgba(255,255,255,0.08)', color: '#78716c' }}>3</div>
+              <span className="text-[11px]" style={{ color: '#78716c' }}>Go live</span>
             </div>
           </div>
 
           {/* Card */}
-          <div className="rounded-2xl p-7 relative" style={{ background: '#0d1518', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}>
+          <div className="rounded-2xl p-7 relative" style={{ background: '#292524', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}>
             {/* Top accent */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl" style={{ background: 'linear-gradient(90deg,#22c55e,#16a34a)' }} />
+            <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl" style={{ background: 'linear-gradient(90deg,#f59e0b,#d97706)' }} />
 
-            <h1 className="text-[22px] font-bold tracking-tight mb-1" style={{ color: '#f1f5f9' }}>Create your account</h1>
-            <p className="text-[13px] mb-6" style={{ color: '#4b6070' }}>Free to start — bring your own OpenAI key</p>
+            <h1 className="text-[22px] font-bold tracking-tight mb-1" style={{ color: '#f5f5f4' }}>Create your account</h1>
+            <p className="text-[13px] mb-6" style={{ color: '#78716c' }}>Free to start — bring your own OpenAI key</p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <Input label="Business Name" type="text" placeholder="Premier Auto Repair" error={errors.business_name?.message} {...register('business_name')} />
@@ -246,9 +246,9 @@ export default function SignupPage() {
               <div className="relative">
                 <Input label="Password" type={showPassword ? 'text' : 'password'} placeholder="At least 8 characters" error={errors.password?.message} {...register('password')} />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-[30px] transition-colors" style={{ color: '#4b6070' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#94a3b8'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#4b6070'; }}>
+                  className="absolute right-3 top-[30px] transition-colors" style={{ color: '#78716c' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#78716c'; }}>
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -268,17 +268,17 @@ export default function SignupPage() {
             <div className="mt-5 pt-4 space-y-2" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
               {benefits.map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-2">
-                  <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#4ade80' }} />
-                  <p className="text-[11px]" style={{ color: '#4b6070' }}>{text}</p>
+                  <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#fbbf24' }} />
+                  <p className="text-[11px]" style={{ color: '#78716c' }}>{text}</p>
                 </div>
               ))}
             </div>
 
-            <p className="text-center text-[12px] mt-4" style={{ color: '#4b6070' }}>
+            <p className="text-center text-[12px] mt-4" style={{ color: '#78716c' }}>
               Already have an account?{' '}
-              <Link href="/login" className="font-semibold transition-colors" style={{ color: '#4ade80' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#22c55e'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#4ade80'; }}>
+              <Link href="/login" className="font-semibold transition-colors" style={{ color: '#fbbf24' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#f59e0b'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#fbbf24'; }}>
                 Sign in
               </Link>
             </p>
@@ -287,9 +287,9 @@ export default function SignupPage() {
           {/* Bottom note */}
           <p className="text-center text-[11px] mt-5" style={{ color: '#2d4050' }}>
             By creating an account you agree to our{' '}
-            <span style={{ color: '#3d5060' }}>Terms of Service</span>
+            <span style={{ color: '#57534e' }}>Terms of Service</span>
             {' '}&amp;{' '}
-            <span style={{ color: '#3d5060' }}>Privacy Policy</span>
+            <span style={{ color: '#57534e' }}>Privacy Policy</span>
           </p>
         </motion.div>
       </div>

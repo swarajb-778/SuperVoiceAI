@@ -28,7 +28,7 @@ export function Toggle({ checked, onChange, label, description, size = 'md', dis
         onClick={() => !disabled && onChange(!checked)}
         className={cn('relative inline-flex items-center rounded-full transition-all duration-200 focus:outline-none flex-shrink-0', s.track)}
         style={checked
-          ? { background: 'linear-gradient(135deg,#22c55e,#16a34a)', boxShadow: '0 0 0 3px rgba(34,197,94,0.15)' }
+          ? { background: 'linear-gradient(135deg,#f59e0b,#d97706)', boxShadow: '0 0 0 3px rgba(245,158,11,0.15)' }
           : { background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.12)' }
         }
       >
@@ -41,8 +41,8 @@ export function Toggle({ checked, onChange, label, description, size = 'md', dis
       </button>
       {(label || description) && (
         <div>
-          {label && <span className="text-[13px] font-medium" style={{ color: '#cbd5e1' }}>{label}</span>}
-          {description && <p className="text-[11px] mt-0.5" style={{ color: '#4b6070' }}>{description}</p>}
+          {label && <span className="text-[13px] font-medium" style={{ color: '#d6d3d1' }}>{label}</span>}
+          {description && <p className="text-[11px] mt-0.5" style={{ color: '#78716c' }}>{description}</p>}
         </div>
       )}
     </label>

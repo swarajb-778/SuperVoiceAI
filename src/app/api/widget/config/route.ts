@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
         position: widget.position,
         primary_color: widget.primary_color,
         greeting: widget.greeting,
-      } : { position: 'bottom-right', primary_color: '#22c55e' },
+      } : { position: 'bottom-right', primary_color: '#f59e0b' },
       agent: agent ? {
         id: agent.id,
         name: agent.name,

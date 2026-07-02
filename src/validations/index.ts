@@ -61,7 +61,7 @@ export const widgetSchema = z.object({
   name: z.string().min(2, 'Widget name is required').max(100),
   agent_id: z.string().uuid().optional().nullable(),
   position: z.enum(['bottom-right', 'bottom-left']).default('bottom-right'),
-  primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Enter a valid hex color').default('#22c55e'),
+  primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Enter a valid hex color').default('#f59e0b'),
   greeting: z.string().max(300).optional().or(z.literal('')),
   is_active: z.boolean().default(true),
   allowed_domains: z.array(z.string()).optional(),

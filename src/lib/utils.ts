@@ -101,10 +101,10 @@ export function buildEmbedCode(
   options?: { position?: string; primaryColor?: string }
 ): string {
   const pos = options?.position || 'bottom-right';
-  return `<!-- CarBot AI Voice Widget -->
+  return `<!-- SuperVoiceAI Voice Widget -->
 <script src="${appUrl}/widget.js"></script>
 <script>
-  CarBot.init({
+  SuperVoiceAI.init({
     businessId: "${businessId}",
     position: "${pos}",
   });
