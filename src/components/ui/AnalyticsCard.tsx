@@ -7,12 +7,12 @@ interface AnalyticsCardProps {
   icon: React.ReactNode;
   trend?: { value: number; label: string; };
   className?: string;
-  accent?: 'blue' | 'green' | 'purple' | 'orange' | 'teal';
+  accent?: 'blue' | 'amber' | 'purple' | 'orange' | 'teal';
 }
 
-export function AnalyticsCard({ title, value, icon, trend, className, accent = 'green' }: AnalyticsCardProps) {
+export function AnalyticsCard({ title, value, icon, trend, className, accent = 'amber' }: AnalyticsCardProps) {
   const accents: Record<string, { iconBg: string; iconBorder: string; iconColor: string; barColor: string; trendBg: string; trendColor: string }> = {
-    green:  { iconBg: 'rgba(34,197,94,0.1)',    iconBorder: 'rgba(34,197,94,0.2)',    iconColor: '#4ade80', barColor: '#22c55e',  trendBg: 'rgba(34,197,94,0.12)',   trendColor: '#4ade80' },
+    amber:  { iconBg: 'rgba(245,158,11,0.1)',    iconBorder: 'rgba(245,158,11,0.2)',    iconColor: '#fbbf24', barColor: '#f59e0b',  trendBg: 'rgba(245,158,11,0.12)',   trendColor: '#fbbf24' },
     teal:   { iconBg: 'rgba(20,184,166,0.1)',   iconBorder: 'rgba(20,184,166,0.2)',   iconColor: '#2dd4bf', barColor: '#14b8a6',  trendBg: 'rgba(20,184,166,0.12)',  trendColor: '#2dd4bf' },
     blue:   { iconBg: 'rgba(59,130,246,0.1)',   iconBorder: 'rgba(59,130,246,0.2)',   iconColor: '#60a5fa', barColor: '#3b82f6',  trendBg: 'rgba(59,130,246,0.12)',  trendColor: '#60a5fa' },
     purple: { iconBg: 'rgba(139,92,246,0.1)',   iconBorder: 'rgba(139,92,246,0.2)',   iconColor: '#a78bfa', barColor: '#8b5cf6',  trendBg: 'rgba(139,92,246,0.12)',  trendColor: '#a78bfa' },
@@ -34,7 +34,7 @@ export function AnalyticsCard({ title, value, icon, trend, className, accent = '
         {trend && TrendIcon && (
           <div className="flex items-center gap-1 text-[11px] font-semibold px-1.5 py-0.5 rounded-md"
             style={trendPositive
-              ? { background: 'rgba(34,197,94,0.12)', color: '#4ade80' }
+              ? { background: 'rgba(245,158,11,0.12)', color: '#fbbf24' }
               : trendNeutral
               ? { background: 'rgba(255,255,255,0.06)', color: '#64748b' }
               : { background: 'rgba(239,68,68,0.12)', color: '#f87171' }
@@ -44,9 +44,9 @@ export function AnalyticsCard({ title, value, icon, trend, className, accent = '
           </div>
         )}
       </div>
-      <div className="text-[22px] font-bold tabular-nums leading-none mb-1" style={{ color: '#f1f5f9' }}>{value}</div>
+      <div className="text-[22px] font-bold tabular-nums leading-none mb-1" style={{ color: '#f5f5f4' }}>{value}</div>
       <div className="text-[12px] font-medium" style={{ color: '#64748b' }}>{title}</div>
-      {trend && <div className="text-[10px] mt-0.5" style={{ color: '#3d5060' }}>{trend.label}</div>}
+      {trend && <div className="text-[10px] mt-0.5" style={{ color: '#57534e' }}>{trend.label}</div>}
       <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 rounded-b"
         style={{ background: a.barColor }} />
     </div>

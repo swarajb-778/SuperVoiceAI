@@ -30,13 +30,13 @@ export function CardHeader({ title, description, action, className, icon }: Card
       <div className="flex items-center gap-2.5">
         {icon && (
           <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', color: '#4ade80' }}>
+            style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', color: '#fbbf24' }}>
             {icon}
           </div>
         )}
         <div>
-          <h3 className="text-[13px] font-bold tracking-tight" style={{ color: '#e2e8f0' }}>{title}</h3>
-          {description && <p className="text-[11px] mt-0.5" style={{ color: '#3d5060' }}>{description}</p>}
+          <h3 className="text-[13px] font-bold tracking-tight" style={{ color: '#e7e5e4' }}>{title}</h3>
+          {description && <p className="text-[11px] mt-0.5" style={{ color: '#57534e' }}>{description}</p>}
         </div>
       </div>
       {action && <div className="ml-4 flex-shrink-0">{action}</div>}

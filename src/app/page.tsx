@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Reveal, RevealSection } from '@/components/Reveal'
 import Script from 'next/script'
 import {
   Mic,
@@ -19,7 +20,6 @@ import {
   Users,
   Globe,
   Lock,
-  Activity,
   Headphones,
   Play,
   ChevronDown,
@@ -35,9 +35,6 @@ import {
   Twitter,
   Github,
   Linkedin,
-  Mail,
-  MapPin,
-  Phone,
 } from 'lucide-react'
 
 /* ─── Data ───────────────────────────────────────────────────────── */
@@ -55,72 +52,6 @@ const heroStats = [
   { value: '<1s', label: 'Voice Latency', icon: Zap },
   { value: '3×', label: 'More Bookings', icon: TrendingUp },
   { value: '98%', label: 'Satisfaction Rate', icon: BadgeCheck },
-]
-
-const bentoFeatures = [
-  {
-    size: 'large',
-    icon: BrainCircuit,
-    accent: '#22c55e',
-    tag: 'AI Core',
-    title: 'GPT-4o Realtime Voice',
-    desc: "Sub-second latency, natural turn-taking, interruption handling. Customers forget they're talking to an AI.",
-    extra: null,
-  },
-  {
-    size: 'small',
-    icon: Calendar,
-    accent: '#8b5cf6',
-    tag: 'Scheduling',
-    title: 'Smart Appointment Booking',
-    desc: 'Books against your real availability. No double-bookings.',
-    extra: null,
-  },
-  {
-    size: 'small',
-    icon: PhoneIncoming,
-    accent: '#f59e0b',
-    tag: 'Always On',
-    title: '24/7 Call Handling',
-    desc: 'After hours, holidays, weekends — every call answered.',
-    extra: null,
-  },
-  {
-    size: 'small',
-    icon: LineChart,
-    accent: '#22c55e',
-    tag: 'Analytics',
-    title: 'Live Conversation Analytics',
-    desc: 'Track calls, sentiment, conversion and booking trends.',
-    extra: null,
-  },
-  {
-    size: 'small',
-    icon: SlidersHorizontal,
-    accent: '#f97316',
-    tag: 'Customizable',
-    title: 'Fully Configurable Agent',
-    desc: 'Voice, personality, FAQs, services — all yours.',
-    extra: null,
-  },
-  {
-    size: 'small',
-    icon: PlugZap,
-    accent: '#ec4899',
-    tag: 'One-Line Setup',
-    title: 'Instant Website Embed',
-    desc: 'One script tag. Works on any site, any platform.',
-    extra: null,
-  },
-  {
-    size: 'small',
-    icon: Shield,
-    accent: '#22c55e',
-    tag: 'Security',
-    title: 'Enterprise-Grade RLS',
-    desc: 'Row-level security. Isolated data. No key exposure.',
-    extra: null,
-  },
 ]
 
 const steps = [
@@ -157,7 +88,7 @@ const steps = [
 const testimonials = [
   {
     quote:
-      'Our missed call rate dropped to zero overnight. CarBot handles every inquiry, books appointments, and even upsells service packages. Best investment we made this year.',
+      'Our missed call rate dropped to zero overnight. SuperVoiceAI handles every inquiry, books appointments, and even upsells service packages. Best investment we made this year.',
     author: 'Mike Thompson',
     role: 'Owner',
     business: 'Premier Auto Repair, Austin TX',
@@ -246,12 +177,12 @@ export default function LandingPage() {
   const demoBizId = process.env.NEXT_PUBLIC_DEMO_BUSINESS_ID || '';
 
   return (
-    <div className="min-h-screen bg-[#050a0e] text-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-stone-900 text-white font-sans antialiased overflow-x-hidden">
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <header
         className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center"
         style={{
-          background: 'linear-gradient(to bottom, rgba(5,10,14,0.95) 0%, rgba(5,10,14,0.6) 100%)',
+          background: 'linear-gradient(to bottom, rgba(28,25,23,0.95) 0%, rgba(28,25,23,0.6) 100%)',
           backdropFilter: 'blur(12px)',
           borderBottom: '1px solid rgba(255,255,255,0.06)',
         }}
@@ -262,14 +193,14 @@ export default function LandingPage() {
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg,#22c55e,#16a34a)',
-                boxShadow: '0 0 20px rgba(34,197,94,0.4)',
+                background: 'linear-gradient(135deg,#f59e0b,#d97706)',
+                boxShadow: '0 0 20px rgba(245,158,11,0.4)',
               }}
             >
               <Mic className="w-4 h-4 text-white" />
             </div>
             <span className="text-[15px] font-bold tracking-tight">
-              CarBot <span className="text-green-400">AI</span>
+              SuperVoice<span className="text-amber-400">AI</span>
             </span>
           </div>
 
@@ -298,8 +229,8 @@ export default function LandingPage() {
               href="/signup"
               className="flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold rounded-lg text-white transition-all duration-150"
               style={{
-                background: 'linear-gradient(135deg,#22c55e,#16a34a)',
-                boxShadow: '0 1px 2px rgba(22,163,74,0.4)',
+                background: 'linear-gradient(135deg,#f59e0b,#d97706)',
+                boxShadow: '0 1px 2px rgba(217,119,6,0.4)',
               }}
             >
               Get Started
@@ -316,14 +247,14 @@ export default function LandingPage() {
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(34,197,94,0.15) 0%, transparent 60%)',
+              'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(245,158,11,0.15) 0%, transparent 60%)',
           }}
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 50% 50% at 20% 80%, rgba(16,185,129,0.08) 0%, transparent 50%)',
+              'radial-gradient(ellipse 50% 50% at 20% 80%, rgba(249,115,22,0.08) 0%, transparent 50%)',
           }}
         />
         <div
@@ -348,25 +279,28 @@ export default function LandingPage() {
             {/* Left */}
             <div>
               {/* Pill */}
+              <Reveal>
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold mb-8"
                 style={{
-                  background: 'rgba(34,197,94,0.1)',
-                  border: '1px solid rgba(34,197,94,0.2)',
-                  color: '#4ade80',
+                  background: 'rgba(245,158,11,0.1)',
+                  border: '1px solid rgba(245,158,11,0.2)',
+                  color: '#fbbf24',
                 }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                 Powered by OpenAI GPT-4o Realtime
                 <Sparkles className="w-3 h-3" />
               </div>
+              </Reveal>
 
+              <Reveal delay={0.1}>
               <h1 className="text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08] mb-6">
                 Your Shop
                 <br />
                 <span
                   style={{
-                    background: 'linear-gradient(135deg,#4ade80,#bbf7d0)',
+                    background: 'linear-gradient(135deg,#fbbf24,#fde68a)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                   }}
@@ -375,20 +309,24 @@ export default function LandingPage() {
                 </span>
                 <br />a Call Again
               </h1>
+              </Reveal>
 
+              <Reveal delay={0.2}>
               <p className="text-[17px] text-gray-400 leading-relaxed mb-8 max-w-lg">
                 Deploy an AI voice receptionist that answers calls, books appointments, and captures
                 leads — 24/7, while you focus on the repairs.
               </p>
+              </Reveal>
 
               {/* CTAs */}
+              <Reveal delay={0.3}>
               <div className="flex flex-col sm:flex-row gap-3 mb-12">
                 <Link
                   href="/signup"
                   className="flex items-center justify-center gap-2 px-6 py-3.5 text-[14px] font-semibold rounded-xl text-white transition-all duration-150 hover:scale-[1.02]"
                   style={{
-                    background: 'linear-gradient(135deg,#22c55e,#16a34a)',
-                    boxShadow: '0 0 0 1px rgba(34,197,94,0.3), 0 4px 24px rgba(34,197,94,0.25)',
+                    background: 'linear-gradient(135deg,#f59e0b,#d97706)',
+                    boxShadow: '0 0 0 1px rgba(245,158,11,0.3), 0 4px 24px rgba(245,158,11,0.25)',
                   }}
                 >
                   Start Free — No Card Needed
@@ -400,22 +338,24 @@ export default function LandingPage() {
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.1)',
-                    color: '#e2e8f0',
+                    color: '#e7e5e4',
                   }}
                 >
-                  <Play className="w-4 h-4 text-green-400" />
+                  <Play className="w-4 h-4 text-amber-400" />
                   Watch Demo
                 </Link>
               </div>
+              </Reveal>
 
               {/* Trust row */}
+              <Reveal delay={0.4}>
               <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex -space-x-2">
                   {['MT', 'SL', 'JR', 'DC'].map((init, i) => (
                     <div
                       key={i}
-                      className="w-8 h-8 rounded-full border-2 border-[#050a0e] flex items-center justify-center text-[10px] font-bold"
-                      style={{ background: `hsl(${140 + i * 20},60%,35%)` }}
+                      className="w-8 h-8 rounded-full border-2 border-stone-900 flex items-center justify-center text-[10px] font-bold"
+                      style={{ background: `hsl(${25 + i * 15},70%,42%)` }}
                     >
                       {init}
                     </div>
@@ -430,6 +370,7 @@ export default function LandingPage() {
                   <p className="text-[11px] text-gray-500">Trusted by 200+ auto repair shops</p>
                 </div>
               </div>
+              </Reveal>
             </div>
 
             {/* Right — Dashboard preview mockup */}
@@ -455,7 +396,7 @@ export default function LandingPage() {
                       className="px-4 py-1 rounded-md text-[11px] text-gray-500"
                       style={{ background: 'rgba(255,255,255,0.05)' }}
                     >
-                      app.carbot.ai/dashboard
+                      app.supervoice.ai/dashboard
                     </div>
                   </div>
                 </div>
@@ -464,9 +405,9 @@ export default function LandingPage() {
                   {/* Stats row */}
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { label: 'Calls Today', value: '24', change: '+8', color: '#22c55e' },
+                      { label: 'Calls Today', value: '24', change: '+8', color: '#f59e0b' },
                       { label: 'Bookings', value: '17', change: '+5', color: '#8b5cf6' },
-                      { label: 'Conversion', value: '71%', change: '+3%', color: '#22c55e' },
+                      { label: 'Conversion', value: '71%', change: '+3%', color: '#f59e0b' },
                     ].map((s) => (
                       <div
                         key={s.label}
@@ -499,7 +440,7 @@ export default function LandingPage() {
                           className="flex-1 rounded-sm transition-all"
                           style={{
                             height: `${h}%`,
-                            background: i === 13 ? '#22c55e' : 'rgba(34,197,94,0.3)',
+                            background: i === 13 ? '#f59e0b' : 'rgba(245,158,11,0.3)',
                           }}
                         />
                       ))}
@@ -510,8 +451,8 @@ export default function LandingPage() {
                   <div
                     className="flex items-center gap-3 rounded-xl px-4 py-3"
                     style={{
-                      background: 'rgba(34,197,94,0.08)',
-                      border: '1px solid rgba(34,197,94,0.2)',
+                      background: 'rgba(245,158,11,0.08)',
+                      border: '1px solid rgba(245,158,11,0.2)',
                     }}
                   >
                     <div className="w-7 h-7 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
@@ -529,7 +470,7 @@ export default function LandingPage() {
                       {[3, 5, 4, 6, 3, 5].map((h, i) => (
                         <div
                           key={i}
-                          className="w-0.5 bg-green-500 rounded-full"
+                          className="w-0.5 bg-amber-500 rounded-full"
                           style={{
                             height: `${h * 3}px`,
                             animation: `wave 1.2s ease-in-out ${i * 0.15}s infinite`,
@@ -543,7 +484,7 @@ export default function LandingPage() {
               {/* Glow behind card */}
               <div
                 className="absolute -inset-4 -z-10 rounded-3xl blur-3xl opacity-20"
-                style={{ background: 'radial-gradient(ellipse at 50% 50%, #22c55e, transparent)' }}
+                style={{ background: 'radial-gradient(ellipse at 50% 50%, #f59e0b, transparent)' }}
               />
             </div>
           </div>
@@ -556,20 +497,20 @@ export default function LandingPage() {
               border: '1px solid rgba(255,255,255,0.08)',
             }}
           >
-            {heroStats.map(({ value, label, icon: Icon }, i) => (
+            {heroStats.map(({ value, label, icon: Icon }) => (
               <div
                 key={label}
                 className="flex items-center gap-4 px-8 py-6"
-                style={{ background: 'rgba(5,10,14,0.6)' }}
+                style={{ background: 'rgba(28,25,23,0.6)' }}
               >
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{
-                    background: 'rgba(34,197,94,0.1)',
-                    border: '1px solid rgba(34,197,94,0.2)',
+                    background: 'rgba(245,158,11,0.1)',
+                    border: '1px solid rgba(245,158,11,0.2)',
                   }}
                 >
-                  <Icon className="w-5 h-5 text-green-400" />
+                  <Icon className="w-5 h-5 text-amber-400" />
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-white tabular-nums">{value}</div>
@@ -588,16 +529,16 @@ export default function LandingPage() {
       </section>
 
       {/* ── FEATURES BENTO ──────────────────────────────────────── */}
-      <section id="features" className="py-28 px-6" style={{ background: '#07100f' }}>
+      <RevealSection id="features" className="py-28 px-6" style={{ background: '#262220' }}>
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="max-w-2xl mb-16">
             <div
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold mb-5"
               style={{
-                background: 'rgba(34,197,94,0.1)',
-                border: '1px solid rgba(34,197,94,0.2)',
-                color: '#4ade80',
+                background: 'rgba(245,158,11,0.1)',
+                border: '1px solid rgba(245,158,11,0.2)',
+                color: '#fbbf24',
               }}
             >
               <Zap className="w-3 h-3" /> Core Features
@@ -607,7 +548,7 @@ export default function LandingPage() {
               <br />
               <span
                 style={{
-                  background: 'linear-gradient(135deg,#4ade80,#bbf7d0)',
+                  background: 'linear-gradient(135deg,#fbbf24,#fde68a)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
@@ -625,20 +566,20 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {/* Large hero feature */}
             <div
-              className="md:col-span-2 lg:col-span-2 rounded-2xl p-8 relative overflow-hidden group"
+              className="md:col-span-2 lg:col-span-2 rounded-2xl p-8 relative overflow-hidden group hover-lift"
               style={{
-                background: 'linear-gradient(135deg,rgba(34,197,94,0.1),rgba(16,185,129,0.05))',
-                border: '1px solid rgba(34,197,94,0.2)',
+                background: 'linear-gradient(135deg,rgba(245,158,11,0.1),rgba(249,115,22,0.05))',
+                border: '1px solid rgba(245,158,11,0.2)',
               }}
             >
               <div
                 className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-30"
-                style={{ background: 'radial-gradient(circle, #22c55e, transparent)' }}
+                style={{ background: 'radial-gradient(circle, #f59e0b, transparent)' }}
               />
               <div className="relative">
                 <div
                   className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold mb-5"
-                  style={{ background: 'rgba(34,197,94,0.15)', color: '#4ade80' }}
+                  style={{ background: 'rgba(245,158,11,0.15)', color: '#fbbf24' }}
                 >
                   <BrainCircuit className="w-3 h-3" /> AI Core
                 </div>
@@ -657,13 +598,13 @@ export default function LandingPage() {
                       className="flex-1 rounded-sm"
                       style={{
                         height: `${h * 10}%`,
-                        background: `rgba(34,197,94,${0.3 + (i % 3) * 0.2})`,
+                        background: `rgba(245,158,11,${0.3 + (i % 3) * 0.2})`,
                         animation: `wave 1.2s ease-in-out ${i * 0.07}s infinite`,
                       }}
                     />
                   ))}
                 </div>
-                <div className="text-[11px] text-green-400/60 mt-2">
+                <div className="text-[11px] text-amber-400/60 mt-2">
                   Live voice waveform simulation
                 </div>
               </div>
@@ -687,7 +628,7 @@ export default function LandingPage() {
               },
               {
                 icon: LineChart,
-                accent: '#22c55e',
+                accent: '#f59e0b',
                 tag: 'Analytics',
                 title: 'Conversation Intelligence',
                 desc: 'Sentiment, topics, conversion rates — all tracked automatically.',
@@ -708,7 +649,7 @@ export default function LandingPage() {
               },
               {
                 icon: Shield,
-                accent: '#22c55e',
+                accent: '#f59e0b',
                 tag: 'Security',
                 title: 'Enterprise Security',
                 desc: 'Row-level security, isolated data, zero permanent key exposure.',
@@ -738,17 +679,17 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* ── HOW IT WORKS ────────────────────────────────────────── */}
-      <section
+      <RevealSection
         id="how-it-works"
         className="py-28 px-6 relative overflow-hidden"
-        style={{ background: '#050a0e' }}
+        style={{ background: '#1c1917' }}
       >
         <div
           className="absolute left-0 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full blur-3xl opacity-10"
-          style={{ background: 'radial-gradient(circle, #22c55e, transparent)' }}
+          style={{ background: 'radial-gradient(circle, #f59e0b, transparent)' }}
         />
 
         <div className="max-w-7xl mx-auto">
@@ -756,9 +697,9 @@ export default function LandingPage() {
             <div
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold mb-5"
               style={{
-                background: 'rgba(34,197,94,0.1)',
-                border: '1px solid rgba(34,197,94,0.2)',
-                color: '#4ade80',
+                background: 'rgba(245,158,11,0.1)',
+                border: '1px solid rgba(245,158,11,0.2)',
+                color: '#fbbf24',
               }}
             >
               <Repeat2 className="w-3 h-3" /> Quick Setup
@@ -768,7 +709,7 @@ export default function LandingPage() {
               <br />
               <span
                 style={{
-                  background: 'linear-gradient(135deg,#4ade80,#86efac)',
+                  background: 'linear-gradient(135deg,#fbbf24,#fcd34d)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
@@ -792,7 +733,7 @@ export default function LandingPage() {
                 <div className="flex-1 flex justify-center">
                   <div className="relative w-full max-w-md">
                     <div
-                      className="rounded-2xl p-8 relative overflow-hidden"
+                      className="rounded-2xl p-8 relative overflow-hidden hover-lift"
                       style={{
                         background: 'rgba(255,255,255,0.03)',
                         border: '1px solid rgba(255,255,255,0.08)',
@@ -807,15 +748,15 @@ export default function LandingPage() {
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
                         style={{
-                          background: 'rgba(34,197,94,0.1)',
-                          border: '1px solid rgba(34,197,94,0.2)',
+                          background: 'rgba(245,158,11,0.1)',
+                          border: '1px solid rgba(245,158,11,0.2)',
                         }}
                       >
-                        <step.icon className="w-6 h-6 text-green-400" />
+                        <step.icon className="w-6 h-6 text-amber-400" />
                       </div>
                       <div
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold"
-                        style={{ background: 'rgba(34,197,94,0.1)', color: '#4ade80' }}
+                        style={{ background: 'rgba(245,158,11,0.1)', color: '#fbbf24' }}
                       >
                         <CheckCircle2 className="w-3 h-3" />
                         {step.highlight}
@@ -826,7 +767,7 @@ export default function LandingPage() {
                       <div
                         className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-px h-8"
                         style={{
-                          background: 'linear-gradient(to bottom,rgba(34,197,94,0.4),transparent)',
+                          background: 'linear-gradient(to bottom,rgba(245,158,11,0.4),transparent)',
                         }}
                       />
                     )}
@@ -835,7 +776,7 @@ export default function LandingPage() {
 
                 {/* Text */}
                 <div className="flex-1 max-w-md">
-                  <div className="text-[11px] font-bold text-green-400/60 uppercase tracking-widest mb-3">
+                  <div className="text-[11px] font-bold text-amber-400/60 uppercase tracking-widest mb-3">
                     Step {step.num}
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
@@ -847,13 +788,13 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* ── TESTIMONIALS ────────────────────────────────────────── */}
-      <section className="py-28 px-6 relative overflow-hidden" style={{ background: '#07100f' }}>
+      <RevealSection className="py-28 px-6 relative overflow-hidden" style={{ background: '#262220' }}>
         <div
           className="absolute right-0 top-0 w-96 h-96 rounded-full blur-3xl opacity-10"
-          style={{ background: 'radial-gradient(circle, #22c55e, transparent)' }}
+          style={{ background: 'radial-gradient(circle, #f59e0b, transparent)' }}
         />
 
         <div className="max-w-7xl mx-auto">
@@ -914,7 +855,7 @@ export default function LandingPage() {
                   className="absolute top-4 right-6 text-[80px] font-black leading-none select-none"
                   style={{ color: 'rgba(255,255,255,0.03)' }}
                 >
-                  "
+                  &ldquo;
                 </div>
                 {/* Stars */}
                 <div className="flex gap-0.5 mb-5">
@@ -923,13 +864,13 @@ export default function LandingPage() {
                   ))}
                 </div>
                 {/* Quote */}
-                <p className="text-[15px] text-gray-300 leading-relaxed mb-6">"{t.quote}"</p>
+                <p className="text-[15px] text-gray-300 leading-relaxed mb-6">&ldquo;{t.quote}&rdquo;</p>
                 {/* Author */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center text-[12px] font-bold text-white"
-                      style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)' }}
+                      style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)' }}
                     >
                       {t.author
                         .split(' ')
@@ -947,9 +888,9 @@ export default function LandingPage() {
                   <div
                     className="px-3 py-1.5 rounded-lg text-[12px] font-bold"
                     style={{
-                      background: 'rgba(34,197,94,0.1)',
-                      border: '1px solid rgba(34,197,94,0.2)',
-                      color: '#4ade80',
+                      background: 'rgba(245,158,11,0.1)',
+                      border: '1px solid rgba(245,158,11,0.2)',
+                      color: '#fbbf24',
                     }}
                   >
                     {t.metric}
@@ -959,13 +900,13 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* ── INTEGRATION / CODE ──────────────────────────────────── */}
-      <section
+      <RevealSection
         id="integration"
         className="py-28 px-6 relative overflow-hidden"
-        style={{ background: '#050a0e' }}
+        style={{ background: '#1c1917' }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -974,9 +915,9 @@ export default function LandingPage() {
               <div
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold mb-6"
                 style={{
-                  background: 'rgba(34,197,94,0.1)',
-                  border: '1px solid rgba(34,197,94,0.2)',
-                  color: '#4ade80',
+                  background: 'rgba(245,158,11,0.1)',
+                  border: '1px solid rgba(245,158,11,0.2)',
+                  color: '#fbbf24',
                 }}
               >
                 <Code2 className="w-3 h-3" /> Integration
@@ -986,7 +927,7 @@ export default function LandingPage() {
                 <br />
                 <span
                   style={{
-                    background: 'linear-gradient(135deg,#4ade80,#16a34a)',
+                    background: 'linear-gradient(135deg,#fbbf24,#d97706)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                   }}
@@ -1009,9 +950,9 @@ export default function LandingPage() {
                   <div key={text} className="flex items-center gap-3">
                     <div
                       className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
-                      style={{ background: 'rgba(34,197,94,0.1)' }}
+                      style={{ background: 'rgba(245,158,11,0.1)' }}
                     >
-                      <Icon className="w-3.5 h-3.5 text-green-400" />
+                      <Icon className="w-3.5 h-3.5 text-amber-400" />
                     </div>
                     <span className="text-[14px] text-gray-400">{text}</span>
                   </div>
@@ -1022,8 +963,8 @@ export default function LandingPage() {
                 href="/signup"
                 className="inline-flex items-center gap-2 px-5 py-3 text-[13px] font-semibold rounded-xl text-white transition-all duration-150"
                 style={{
-                  background: 'linear-gradient(135deg,#22c55e,#16a34a)',
-                  boxShadow: '0 0 0 1px rgba(34,197,94,0.3)',
+                  background: 'linear-gradient(135deg,#f59e0b,#d97706)',
+                  boxShadow: '0 0 0 1px rgba(245,158,11,0.3)',
                 }}
               >
                 Get Your Embed Code
@@ -1036,7 +977,7 @@ export default function LandingPage() {
               <div
                 className="rounded-2xl overflow-hidden"
                 style={{
-                  background: '#0d1117',
+                  background: '#292524',
                   border: '1px solid rgba(255,255,255,0.08)',
                   boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
                 }}
@@ -1061,10 +1002,10 @@ export default function LandingPage() {
                   <div style={{ color: '#6b7280' }}>{'<!-- Paste before </body> -->'}</div>
                   <div className="mt-3">
                     <span style={{ color: '#f97316' }}>{'<script '}</span>
-                    <span style={{ color: '#4ade80' }}>src</span>
-                    <span style={{ color: '#e2e8f0' }}>=</span>
-                    <span style={{ color: '#4ade80' }}>
-                      "https://yourapp.com/api/widget-script"
+                    <span style={{ color: '#fbbf24' }}>src</span>
+                    <span style={{ color: '#e7e5e4' }}>=</span>
+                    <span style={{ color: '#fbbf24' }}>
+                      &quot;https://yourapp.com/api/widget-script&quot;
                     </span>
                     <span style={{ color: '#f97316' }}>{' />'}</span>
                   </div>
@@ -1072,24 +1013,24 @@ export default function LandingPage() {
                     <span style={{ color: '#f97316' }}>{'<script>'}</span>
                   </div>
                   <div className="ml-6">
-                    <span style={{ color: '#e2e8f0' }}>CarBot.</span>
-                    <span style={{ color: '#4ade80' }}>init</span>
-                    <span style={{ color: '#e2e8f0' }}>{'({'}</span>
+                    <span style={{ color: '#e7e5e4' }}>SuperVoiceAI.</span>
+                    <span style={{ color: '#fbbf24' }}>init</span>
+                    <span style={{ color: '#e7e5e4' }}>{'({'}</span>
                   </div>
                   <div className="ml-12">
                     <span style={{ color: '#fbbf24' }}>businessId</span>
-                    <span style={{ color: '#e2e8f0' }}>: </span>
-                    <span style={{ color: '#4ade80' }}>"your-business-id"</span>
-                    <span style={{ color: '#e2e8f0' }}>,</span>
+                    <span style={{ color: '#e7e5e4' }}>: </span>
+                    <span style={{ color: '#fbbf24' }}>&quot;your-business-id&quot;</span>
+                    <span style={{ color: '#e7e5e4' }}>,</span>
                   </div>
                   <div className="ml-12">
                     <span style={{ color: '#fbbf24' }}>position</span>
-                    <span style={{ color: '#e2e8f0' }}>: </span>
-                    <span style={{ color: '#4ade80' }}>"bottom-right"</span>
-                    <span style={{ color: '#e2e8f0' }}>,</span>
+                    <span style={{ color: '#e7e5e4' }}>: </span>
+                    <span style={{ color: '#fbbf24' }}>&quot;bottom-right&quot;</span>
+                    <span style={{ color: '#e7e5e4' }}>,</span>
                   </div>
                   <div className="ml-6">
-                    <span style={{ color: '#e2e8f0' }}>{'})'}</span>
+                    <span style={{ color: '#e7e5e4' }}>{'})'}</span>
                   </div>
                   <div>
                     <span style={{ color: '#f97316' }}>{'</script>'}</span>
@@ -1104,7 +1045,7 @@ export default function LandingPage() {
                   }}
                 >
                   <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-[11px]" style={{ color: '#4ade80' }}>
+                  <span className="text-[11px]" style={{ color: '#fbbf24' }}>
                     Widget active — listening for calls
                   </span>
                 </div>
@@ -1112,20 +1053,20 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* ── LIVE DEMO SECTION ───────────────────────────────────── */}
-      <section
+      <RevealSection
         id="demo"
         className="py-28 px-6 relative overflow-hidden"
-        style={{ background: '#07100f' }}
+        style={{ background: '#262220' }}
       >
         {/* Background glow */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(34,197,94,0.07) 0%, transparent 65%)',
+              'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(245,158,11,0.07) 0%, transparent 65%)',
           }}
         />
 
@@ -1136,9 +1077,9 @@ export default function LandingPage() {
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold mb-7"
                 style={{
-                  background: 'rgba(34,197,94,0.1)',
-                  border: '1px solid rgba(34,197,94,0.25)',
-                  color: '#4ade80',
+                  background: 'rgba(245,158,11,0.1)',
+                  border: '1px solid rgba(245,158,11,0.25)',
+                  color: '#fbbf24',
                 }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
@@ -1150,7 +1091,7 @@ export default function LandingPage() {
                 <br />
                 <span
                   style={{
-                    background: 'linear-gradient(135deg,#4ade80,#bbf7d0)',
+                    background: 'linear-gradient(135deg,#fbbf24,#fde68a)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                   }}
@@ -1193,11 +1134,11 @@ export default function LandingPage() {
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
                       style={{
-                        background: 'rgba(34,197,94,0.1)',
-                        border: '1px solid rgba(34,197,94,0.2)',
+                        background: 'rgba(245,158,11,0.1)',
+                        border: '1px solid rgba(245,158,11,0.2)',
                       }}
                     >
-                      <Icon className="w-4 h-4 text-green-400" />
+                      <Icon className="w-4 h-4 text-amber-400" />
                     </div>
                     <div>
                       <div className="text-[13px] font-semibold text-white">{title}</div>
@@ -1214,15 +1155,15 @@ export default function LandingPage() {
                 className="relative w-full max-w-sm rounded-2xl p-8 text-center overflow-hidden"
                 style={{
                   background:
-                    'linear-gradient(135deg,rgba(34,197,94,0.08),rgba(16,185,129,0.04))',
-                  border: '1px solid rgba(34,197,94,0.2)',
-                  boxShadow: '0 0 60px rgba(34,197,94,0.08)',
+                    'linear-gradient(135deg,rgba(245,158,11,0.08),rgba(249,115,22,0.04))',
+                  border: '1px solid rgba(245,158,11,0.2)',
+                  boxShadow: '0 0 60px rgba(245,158,11,0.08)',
                 }}
               >
                 {/* Top glow */}
                 <div
                   className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-24 blur-3xl opacity-30 pointer-events-none"
-                  style={{ background: 'radial-gradient(ellipse, #22c55e, transparent)' }}
+                  style={{ background: 'radial-gradient(ellipse, #f59e0b, transparent)' }}
                 />
 
                 {/* Animated orb */}
@@ -1231,7 +1172,7 @@ export default function LandingPage() {
                   <div
                     className="absolute w-32 h-32 rounded-full"
                     style={{
-                      background: 'rgba(34,197,94,0.08)',
+                      background: 'rgba(245,158,11,0.08)',
                       animation: 'demo-pulse-outer 2.2s ease-out infinite',
                     }}
                   />
@@ -1239,7 +1180,7 @@ export default function LandingPage() {
                   <div
                     className="absolute w-24 h-24 rounded-full"
                     style={{
-                      background: 'rgba(34,197,94,0.1)',
+                      background: 'rgba(245,158,11,0.1)',
                       animation: 'demo-pulse-outer 2.2s ease-out 0.4s infinite',
                     }}
                   />
@@ -1247,8 +1188,8 @@ export default function LandingPage() {
                   <div
                     className="relative w-20 h-20 rounded-full flex items-center justify-center"
                     style={{
-                      background: 'linear-gradient(135deg,#22c55e,#16a34a)',
-                      boxShadow: '0 8px 32px rgba(34,197,94,0.5), 0 2px 8px rgba(0,0,0,0.4)',
+                      background: 'linear-gradient(135deg,#f59e0b,#d97706)',
+                      boxShadow: '0 8px 32px rgba(245,158,11,0.5), 0 2px 8px rgba(0,0,0,0.4)',
                     }}
                   >
                     <PhoneCall className="w-8 h-8 text-white" />
@@ -1258,14 +1199,14 @@ export default function LandingPage() {
                 <div className="text-[18px] font-bold text-white mb-2">Try It Right Now</div>
                 <p className="text-[13px] text-gray-400 mb-6 leading-relaxed">
                   Our AI demo agent is live and ready to chat. Click the{' '}
-                  <span style={{ color: '#4ade80' }}>green phone button</span> in the corner.
+                  <span style={{ color: '#fbbf24' }}>green phone button</span> in the corner.
                 </p>
 
                 {/* Suggested questions */}
                 <div className="space-y-2 text-left">
                   <div
                     className="text-[10px] font-bold uppercase tracking-widest mb-3"
-                    style={{ color: '#3d5060' }}
+                    style={{ color: '#57534e' }}
                   >
                     Try asking…
                   </div>
@@ -1281,17 +1222,17 @@ export default function LandingPage() {
                       style={{
                         background: 'rgba(255,255,255,0.04)',
                         border: '1px solid rgba(255,255,255,0.06)',
-                        color: '#94a3b8',
+                        color: '#a8a29e',
                       }}
                     >
-                      <MessageSquare className="w-3 h-3 flex-shrink-0" style={{ color: '#22c55e' }} />
+                      <MessageSquare className="w-3 h-3 flex-shrink-0" style={{ color: '#f59e0b' }} />
                       {q}
                     </div>
                   ))}
                 </div>
 
                 {/* Arrow hint */}
-                <div className="mt-6 flex items-center justify-center gap-2 text-[12px]" style={{ color: '#4ade80' }}>
+                <div className="mt-6 flex items-center justify-center gap-2 text-[12px]" style={{ color: '#fbbf24' }}>
                   <span>Click the phone button below</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
@@ -1306,19 +1247,19 @@ export default function LandingPage() {
             100% { transform: scale(1.6); opacity: 0; }
           }
         `}</style>
-      </section>
+      </RevealSection>
 
       {/* ── PRICING ─────────────────────────────────────────────── */}
-      <section
+      <RevealSection
         id="pricing"
         className="py-28 px-6 relative overflow-hidden"
-        style={{ background: '#07100f' }}
+        style={{ background: '#262220' }}
       >
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(34,197,94,0.06) 0%, transparent 60%)',
+              'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(245,158,11,0.06) 0%, transparent 60%)',
           }}
         />
 
@@ -1327,9 +1268,9 @@ export default function LandingPage() {
             <div
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold mb-5"
               style={{
-                background: 'rgba(34,197,94,0.1)',
-                border: '1px solid rgba(34,197,94,0.2)',
-                color: '#4ade80',
+                background: 'rgba(245,158,11,0.1)',
+                border: '1px solid rgba(245,158,11,0.2)',
+                color: '#fbbf24',
               }}
             >
               <BadgeCheck className="w-3 h-3" /> Pricing
@@ -1346,14 +1287,14 @@ export default function LandingPage() {
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className="relative rounded-2xl p-8"
+                className="relative rounded-2xl p-8 hover-lift"
                 style={
                   plan.highlight
                     ? {
                         background:
-                          'linear-gradient(135deg,rgba(34,197,94,0.1),rgba(16,185,129,0.05))',
-                        border: '1px solid rgba(34,197,94,0.3)',
-                        boxShadow: '0 0 0 1px rgba(34,197,94,0.1), 0 20px 40px rgba(34,197,94,0.1)',
+                          'linear-gradient(135deg,rgba(245,158,11,0.1),rgba(249,115,22,0.05))',
+                        border: '1px solid rgba(245,158,11,0.3)',
+                        boxShadow: '0 0 0 1px rgba(245,158,11,0.1), 0 20px 40px rgba(245,158,11,0.1)',
                       }
                     : {
                         background: 'rgba(255,255,255,0.03)',
@@ -1365,7 +1306,7 @@ export default function LandingPage() {
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                     <span
                       className="px-4 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider text-white"
-                      style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)' }}
+                      style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)' }}
                     >
                       Most Popular
                     </span>
@@ -1406,9 +1347,9 @@ export default function LandingPage() {
                     <li key={f} className="flex items-center gap-2.5">
                       <div
                         className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
-                        style={{ background: 'rgba(34,197,94,0.15)' }}
+                        style={{ background: 'rgba(245,158,11,0.15)' }}
                       >
-                        <CheckCircle2 className="w-3 h-3 text-green-400" />
+                        <CheckCircle2 className="w-3 h-3 text-amber-400" />
                       </div>
                       <span className="text-[13px] text-gray-300">{f}</span>
                     </li>
@@ -1421,14 +1362,14 @@ export default function LandingPage() {
                   style={
                     plan.highlight
                       ? {
-                          background: 'linear-gradient(135deg,#22c55e,#16a34a)',
+                          background: 'linear-gradient(135deg,#f59e0b,#d97706)',
                           color: '#fff',
-                          boxShadow: '0 2px 12px rgba(34,197,94,0.3)',
+                          boxShadow: '0 2px 12px rgba(245,158,11,0.3)',
                         }
                       : {
                           background: 'rgba(255,255,255,0.06)',
                           border: '1px solid rgba(255,255,255,0.1)',
-                          color: '#e2e8f0',
+                          color: '#e7e5e4',
                         }
                   }
                 >
@@ -1442,22 +1383,22 @@ export default function LandingPage() {
           <p className="text-center text-[12px] text-gray-600 mt-10">
             Questions?{' '}
             <a
-              href="mailto:support@carbot.ai"
-              className="text-green-400 hover:text-green-300 transition-colors"
+              href="mailto:support@supervoice.ai"
+              className="text-amber-400 hover:text-amber-300 transition-colors"
             >
-              support@carbot.ai
+              support@supervoice.ai
             </a>
           </p>
         </div>
-      </section>
+      </RevealSection>
 
       {/* ── FINAL CTA ───────────────────────────────────────────── */}
-      <section className="py-28 px-6 relative overflow-hidden" style={{ background: '#050a0e' }}>
+      <RevealSection className="py-28 px-6 relative overflow-hidden" style={{ background: '#1c1917' }}>
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(34,197,94,0.08) 0%, transparent 70%)',
+              'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(245,158,11,0.08) 0%, transparent 70%)',
           }}
         />
         <div
@@ -1472,16 +1413,16 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto text-center relative">
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-8"
-            style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}
+            style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}
           >
-            <Headphones className="w-8 h-8 text-green-400" />
+            <Headphones className="w-8 h-8 text-amber-400" />
           </div>
           <h2 className="text-5xl md:text-6xl font-black tracking-tight mb-6">
             Stop losing calls.
             <br />
             <span
               style={{
-                background: 'linear-gradient(135deg,#4ade80,#bbf7d0)',
+                background: 'linear-gradient(135deg,#fbbf24,#fde68a)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}
@@ -1498,8 +1439,8 @@ export default function LandingPage() {
               href="/signup"
               className="flex items-center justify-center gap-2 px-8 py-4 text-[15px] font-bold rounded-xl text-white transition-all duration-150 hover:scale-[1.02]"
               style={{
-                background: 'linear-gradient(135deg,#22c55e,#16a34a)',
-                boxShadow: '0 0 0 1px rgba(34,197,94,0.3), 0 8px 32px rgba(34,197,94,0.3)',
+                background: 'linear-gradient(135deg,#f59e0b,#d97706)',
+                boxShadow: '0 0 0 1px rgba(245,158,11,0.3), 0 8px 32px rgba(245,158,11,0.3)',
               }}
             >
               Get Started Free
@@ -1521,10 +1462,10 @@ export default function LandingPage() {
             No credit card required · Free plan available · Deploy in 30 min
           </p>
         </div>
-      </section>
+      </RevealSection>
 
       {/* ── FOOTER ──────────────────────────────────────────────── */}
-      <footer style={{ background: '#030609', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      <footer style={{ background: '#191614', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="max-w-7xl mx-auto px-6 py-16">
           {/* Top row */}
           <div className="grid md:grid-cols-5 gap-10 mb-16">
@@ -1533,12 +1474,12 @@ export default function LandingPage() {
               <div className="flex items-center gap-2.5 mb-4">
                 <div
                   className="w-8 h-8 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)' }}
+                  style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)' }}
                 >
                   <Mic className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-[15px] font-bold">
-                  CarBot <span className="text-green-400">AI</span>
+                  SuperVoice<span className="text-amber-400">AI</span>
                 </span>
               </div>
               <p className="text-[13px] text-gray-500 leading-relaxed mb-6 max-w-xs">
@@ -1590,7 +1531,7 @@ export default function LandingPage() {
             className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8"
             style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
           >
-            <p className="text-[12px] text-gray-600">© 2026 CarBot AI. All rights reserved.</p>
+            <p className="text-[12px] text-gray-600">© 2026 SuperVoiceAI. All rights reserved.</p>
             <div className="flex items-center gap-2 text-[12px] text-gray-600">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               All systems operational
@@ -1612,14 +1553,14 @@ export default function LandingPage() {
 
       {/* ── LIVE DEMO WIDGET — home page only ───────────────────── */}
       {demoBizId && (
-        <Script id="carbot-demo-init" strategy="afterInteractive">
+        <Script id="supervoice-demo-init" strategy="afterInteractive">
           {`
             (function() {
               if (window.location.pathname !== '/') return;
               var s = document.createElement('script');
               s.src = '${appUrl}/widget.js';
               s.onload = function() {
-                CarBot.init({ businessId: '${demoBizId}', position: 'bottom-right' });
+                SuperVoiceAI.init({ businessId: '${demoBizId}', position: 'bottom-right' });
               };
               document.body.appendChild(s);
             })();

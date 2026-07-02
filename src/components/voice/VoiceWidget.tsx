@@ -21,7 +21,7 @@ interface VoiceWidgetProps {
 export function VoiceWidget({
   businessId,
   businessName = 'Auto Repair',
-  primaryColor = '#22c55e',
+  primaryColor = '#f59e0b',
   position = 'bottom-right',
   greeting,
 }: VoiceWidgetProps) {
@@ -59,7 +59,7 @@ export function VoiceWidget({
             transition={{ type: 'spring', damping: 28, stiffness: 320 }}
             className="w-[340px] rounded-2xl overflow-hidden"
             style={{
-              background: 'rgba(8,14,16,0.97)',
+              background: 'rgba(28,25,23,0.97)',
               border: '1px solid rgba(255,255,255,0.1)',
               boxShadow: '0 24px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05)',
               backdropFilter: 'blur(20px)',
@@ -78,7 +78,7 @@ export function VoiceWidget({
                   <Mic className="w-4 h-4" style={{ color: primaryColor }} />
                 </div>
                 <div>
-                  <div className="text-[13px] font-bold leading-tight" style={{ color: '#f1f5f9' }}>
+                  <div className="text-[13px] font-bold leading-tight" style={{ color: '#f5f5f4' }}>
                     {businessName}
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -98,7 +98,7 @@ export function VoiceWidget({
                   onClick={handleClose}
                   className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
                   style={{ background: 'rgba(255,255,255,0.06)', color: '#64748b' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLElement).style.color = '#e2e8f0'; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLElement).style.color = '#e7e5e4'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.color = '#64748b'; }}
                 >
                   <X className="w-3.5 h-3.5" />
@@ -114,7 +114,7 @@ export function VoiceWidget({
             {/* Voice Control Area */}
             <div className="px-5 py-5 flex flex-col items-center gap-4">
               {connectionState.status === 'idle' && (
-                <p className="text-[12px] text-center leading-relaxed" style={{ color: '#4b6070' }}>
+                <p className="text-[12px] text-center leading-relaxed" style={{ color: '#78716c' }}>
                   {greeting || `Talk to our AI receptionist — ask about services, hours, or book an appointment`}
                 </p>
               )}
@@ -133,8 +133,8 @@ export function VoiceWidget({
             {/* Footer */}
             <div className="px-4 py-2.5 flex items-center justify-center gap-1.5"
               style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.3)' }}>
-              <Sparkles className="w-3 h-3" style={{ color: '#3d5060' }} />
-              <span className="text-[10px]" style={{ color: '#2a3f4d' }}>Powered by CarBot AI</span>
+              <Sparkles className="w-3 h-3" style={{ color: '#57534e' }} />
+              <span className="text-[10px]" style={{ color: '#44403c' }}>Powered by SuperVoiceAI</span>
             </div>
           </motion.div>
         ) : (
@@ -177,7 +177,7 @@ export function VoiceWidget({
             {/* Tooltip */}
             <div
               className="absolute bottom-full mb-3 right-0 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold whitespace-nowrap pointer-events-none"
-              style={{ background: 'rgba(8,14,16,0.95)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.4)' }}
+              style={{ background: 'rgba(28,25,23,0.95)', border: '1px solid rgba(255,255,255,0.1)', color: '#e7e5e4', boxShadow: '0 4px 16px rgba(0,0,0,0.4)' }}
             >
               Talk to AI
               <div className="absolute top-full right-4 w-0 h-0" style={{ borderLeft: '4px solid transparent', borderRight: '4px solid transparent', borderTop: '4px solid rgba(255,255,255,0.1)' }} />

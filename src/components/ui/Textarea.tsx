@@ -12,7 +12,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-[12px] font-semibold mb-1.5" style={{ color: '#94a3b8' }}>
+          <label className="block text-[12px] font-semibold mb-1.5" style={{ color: '#a8a29e' }}>
             {label}
             {props.required && <span className="text-red-400 ml-0.5">*</span>}
           </label>
@@ -23,12 +23,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           style={{
             background: 'rgba(255,255,255,0.04)',
             border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.08)',
-            color: '#e2e8f0',
+            color: '#e7e5e4',
             ...style,
           }}
           onFocus={e => {
-            e.currentTarget.style.borderColor = error ? 'rgba(239,68,68,0.7)' : 'rgba(34,197,94,0.4)';
-            e.currentTarget.style.boxShadow = error ? '0 0 0 3px rgba(239,68,68,0.1)' : '0 0 0 3px rgba(34,197,94,0.08)';
+            e.currentTarget.style.borderColor = error ? 'rgba(239,68,68,0.7)' : 'rgba(245,158,11,0.4)';
+            e.currentTarget.style.boxShadow = error ? '0 0 0 3px rgba(239,68,68,0.1)' : '0 0 0 3px rgba(245,158,11,0.08)';
           }}
           onBlur={e => {
             e.currentTarget.style.borderColor = error ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.08)';
@@ -37,7 +37,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {error && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{error}</p>}
-        {hint && !error && <p className="text-[11px] mt-1" style={{ color: '#4b6070' }}>{hint}</p>}
+        {hint && !error && <p className="text-[11px] mt-1" style={{ color: '#78716c' }}>{hint}</p>}
       </div>
     );
   }

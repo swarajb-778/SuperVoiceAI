@@ -12,7 +12,7 @@ interface WaveformProps {
 
 const BAR_HEIGHTS = [6, 10, 14, 10, 6];
 
-export function Waveform({ isActive, barCount = 5, className, color = '#22c55e' }: WaveformProps) {
+export function Waveform({ isActive, barCount = 5, className, color = '#f59e0b' }: WaveformProps) {
   const bars = Array.from({ length: barCount });
 
   if (!isActive) {

@@ -156,7 +156,7 @@ export default function SettingsPage() {
         <Card>
           <CardHeader title="Business Hours" description="Set when your business is open" />
           {!business ? (
-            <div className="py-6 text-center text-[13px]" style={{ color: '#4b6070' }}>
+            <div className="py-6 text-center text-[13px]" style={{ color: '#78716c' }}>
               Save your business profile first to configure hours.
             </div>
           ) : hoursLoading ? (
@@ -169,7 +169,7 @@ export default function SettingsPage() {
             <div className="space-y-3">
               {hours.map((hour, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="w-24 text-[13px] font-medium" style={{ color: '#94a3b8' }}>
+                  <div className="w-24 text-[13px] font-medium" style={{ color: '#a8a29e' }}>
                     {DAYS_OF_WEEK[hour.day_of_week]}
                   </div>
                   <Toggle size="sm" checked={hour.is_open} onChange={(v) => updateHour(i, 'is_open', v)} />
@@ -180,19 +180,19 @@ export default function SettingsPage() {
                         value={hour.open_time}
                         onChange={(e) => updateHour(i, 'open_time', e.target.value)}
                         className="w-28 text-[12px] py-1.5 px-2 rounded-lg outline-none"
-                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#e2e8f0', colorScheme: 'dark' }}
+                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#e7e5e4', colorScheme: 'dark' }}
                       />
-                      <span className="text-[13px]" style={{ color: '#3d5060' }}>to</span>
+                      <span className="text-[13px]" style={{ color: '#57534e' }}>to</span>
                       <input
                         type="time"
                         value={hour.close_time}
                         onChange={(e) => updateHour(i, 'close_time', e.target.value)}
                         className="w-28 text-[12px] py-1.5 px-2 rounded-lg outline-none"
-                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#e2e8f0', colorScheme: 'dark' }}
+                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#e7e5e4', colorScheme: 'dark' }}
                       />
                     </>
                   ) : (
-                    <span className="text-[13px] ml-2" style={{ color: '#3d5060' }}>Closed</span>
+                    <span className="text-[13px] ml-2" style={{ color: '#57534e' }}>Closed</span>
                   )}
                 </div>
               ))}

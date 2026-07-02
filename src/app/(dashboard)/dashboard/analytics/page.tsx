@@ -15,7 +15,7 @@ import {
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend,
 } from 'recharts';
 
-const COLORS = ['#22c55e', '#8b5cf6', '#f97316', '#3b82f6'];
+const COLORS = ['#f59e0b', '#8b5cf6', '#f97316', '#3b82f6'];
 
 export default function AnalyticsPage() {
   const { business } = useBusinessStore();
@@ -84,11 +84,11 @@ export default function AnalyticsPage() {
     : [{ name: 'No Data', value: 1 }];
 
   const tooltipStyle = {
-    background: '#111c1f',
+    background: '#322e2b',
     border: '1px solid rgba(255,255,255,0.1)',
     borderRadius: '10px',
     fontSize: '12px',
-    color: '#e2e8f0',
+    color: '#e7e5e4',
     boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
   };
 
@@ -97,7 +97,7 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { title: 'Total Conversations', value: analytics?.total_conversations ?? 0, icon: <MessageSquare className="w-4 h-4" />, accent: 'blue' as const },
-          { title: 'Appointments Booked', value: analytics?.appointments_booked ?? 0, icon: <Calendar className="w-4 h-4" />, accent: 'green' as const },
+          { title: 'Appointments Booked', value: analytics?.appointments_booked ?? 0, icon: <Calendar className="w-4 h-4" />, accent: 'amber' as const },
           { title: 'Conversion Rate', value: `${analytics?.conversion_rate ?? 0}%`, icon: <TrendingUp className="w-4 h-4" />, accent: 'purple' as const },
           { title: 'Avg. Call Duration', value: formatDuration(analytics?.avg_call_duration ?? 0), icon: <Clock className="w-4 h-4" />, accent: 'orange' as const },
         ].map((card) => (
@@ -114,8 +114,8 @@ export default function AnalyticsPage() {
                 <AreaChart data={chartData}>
                   <defs>
                     <linearGradient id="analyticsConv" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#22c55e" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="analyticsAppt" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.18} />
@@ -123,10 +123,10 @@ export default function AnalyticsPage() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#3d5060' }} tickLine={false} axisLine={false} interval={4} />
-                  <YAxis tick={{ fontSize: 10, fill: '#3d5060' }} tickLine={false} axisLine={false} allowDecimals={false} domain={[0, 'auto']} />
+                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#57534e' }} tickLine={false} axisLine={false} interval={4} />
+                  <YAxis tick={{ fontSize: 10, fill: '#57534e' }} tickLine={false} axisLine={false} allowDecimals={false} domain={[0, 'auto']} />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Area type="monotone" dataKey="conversations" stroke="#22c55e" strokeWidth={2} fill="url(#analyticsConv)" name="Conversations" dot={false} />
+                  <Area type="monotone" dataKey="conversations" stroke="#f59e0b" strokeWidth={2} fill="url(#analyticsConv)" name="Conversations" dot={false} />
                   <Area type="monotone" dataKey="appointments" stroke="#8b5cf6" strokeWidth={2} fill="url(#analyticsAppt)" name="Appointments" strokeDasharray="4 2" dot={false} />
                 </AreaChart>
               </ResponsiveContainer>
@@ -158,11 +158,11 @@ export default function AnalyticsPage() {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={weekData} barGap={2}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-              <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#3d5060' }} tickLine={false} axisLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#3d5060' }} tickLine={false} axisLine={false} allowDecimals={false} domain={[0, Math.max(maxWeekVal + 1, 5)]} />
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#57534e' }} tickLine={false} axisLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: '#57534e' }} tickLine={false} axisLine={false} allowDecimals={false} domain={[0, Math.max(maxWeekVal + 1, 5)]} />
               <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
               <Legend iconSize={8} iconType="circle" wrapperStyle={{ fontSize: '11px', color: '#64748b' }} />
-              <Bar dataKey="conversations" name="Conversations" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={40} />
+              <Bar dataKey="conversations" name="Conversations" fill="#f59e0b" radius={[4, 4, 0, 0]} maxBarSize={40} />
               <Bar dataKey="appointments" name="Appointments" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={40} />
             </BarChart>
           </ResponsiveContainer>
@@ -177,10 +177,10 @@ export default function AnalyticsPage() {
           { label: 'Callback Requests', conversations: analytics?.callback_requests ?? 0, appointments: 0 },
         ].map((item) => (
           <Card key={item.label} padding="sm">
-            <div className="text-[11px] font-medium mb-2" style={{ color: '#4b6070' }}>{item.label}</div>
-            <div className="text-[22px] font-bold tabular-nums" style={{ color: '#f1f5f9' }}>{item.conversations}</div>
+            <div className="text-[11px] font-medium mb-2" style={{ color: '#78716c' }}>{item.label}</div>
+            <div className="text-[22px] font-bold tabular-nums" style={{ color: '#f5f5f4' }}>{item.conversations}</div>
             {item.appointments > 0 && (
-              <div className="text-[11px] mt-0.5" style={{ color: '#4ade80' }}>{item.appointments} booked</div>
+              <div className="text-[11px] mt-0.5" style={{ color: '#fbbf24' }}>{item.appointments} booked</div>
             )}
           </Card>
         ))}

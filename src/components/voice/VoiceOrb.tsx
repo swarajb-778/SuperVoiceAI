@@ -22,7 +22,7 @@ export function VoiceOrb({
   onDisconnect,
   onToggleMute,
   size = 'md',
-  primaryColor = '#22c55e',
+  primaryColor = '#f59e0b',
 }: VoiceOrbProps) {
   const isConnected = ['connected', 'listening', 'speaking'].includes(connectionState.status);
   const isSpeaking = connectionState.status === 'speaking';
@@ -143,7 +143,7 @@ export function VoiceOrb({
       )}
 
       {!isConnected && connectionState.status === 'idle' && (
-        <p className="text-[11px]" style={{ color: '#3d5060' }}>Tap to start</p>
+        <p className="text-[11px]" style={{ color: '#57534e' }}>Tap to start</p>
       )}
 
       {connectionState.status === 'error' && (

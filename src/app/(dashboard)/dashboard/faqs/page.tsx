@@ -127,10 +127,10 @@ export default function FaqsPage() {
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)'; }}
                   onClick={() => setExpanded(expanded === faq.id ? null : faq.id)}
                 >
-                  <HelpCircle className="w-4 h-4 flex-shrink-0" style={{ color: '#4ade80' }} />
+                  <HelpCircle className="w-4 h-4 flex-shrink-0" style={{ color: '#fbbf24' }} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[13px] font-medium" style={{ color: '#e2e8f0' }}>{faq.question}</span>
+                      <span className="text-[13px] font-medium" style={{ color: '#e7e5e4' }}>{faq.question}</span>
                       {faq.category && <Badge variant="blue">{faq.category}</Badge>}
                       {!faq.is_active && <Badge variant="gray">Inactive</Badge>}
                     </div>
@@ -139,8 +139,8 @@ export default function FaqsPage() {
                     <Button variant="ghost" size="sm" icon={<Edit2 className="w-3.5 h-3.5" />} onClick={(e) => { e.stopPropagation(); openEdit(faq); }} />
                     <Button variant="ghost" size="sm" icon={<Trash2 className="w-3.5 h-3.5" style={{ color: '#f87171' }} />} onClick={(e) => { e.stopPropagation(); setDeleteId(faq.id); }} />
                     {expanded === faq.id
-                      ? <ChevronUp className="w-4 h-4 ml-1" style={{ color: '#3d5060' }} />
-                      : <ChevronDown className="w-4 h-4 ml-1" style={{ color: '#3d5060' }} />
+                      ? <ChevronUp className="w-4 h-4 ml-1" style={{ color: '#57534e' }} />
+                      : <ChevronDown className="w-4 h-4 ml-1" style={{ color: '#57534e' }} />
                     }
                   </div>
                 </div>
@@ -168,7 +168,7 @@ export default function FaqsPage() {
       </Modal>
 
       <Modal isOpen={!!deleteId} onClose={() => setDeleteId(null)} title="Delete FAQ" size="sm">
-        <p className="text-[13px] mb-5" style={{ color: '#94a3b8' }}>This FAQ will be removed from your AI knowledge base.</p>
+        <p className="text-[13px] mb-5" style={{ color: '#a8a29e' }}>This FAQ will be removed from your AI knowledge base.</p>
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={() => setDeleteId(null)}>Cancel</Button>
           <Button variant="danger" loading={deletingId === deleteId} onClick={() => deleteId && handleDelete(deleteId)}>Delete</Button>

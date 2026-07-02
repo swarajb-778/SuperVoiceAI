@@ -6,8 +6,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'CarBot AI - AI Voice Receptionist for Auto Repair',
-    template: '%s | CarBot AI',
+    default: 'SuperVoiceAI - AI Voice Receptionist for Auto Repair',
+    template: '%s | SuperVoiceAI',
   },
   description: 'AI-powered voice receptionist platform for auto repair businesses. Book appointments, answer questions, and capture leads 24/7.',
   keywords: ['AI receptionist', 'auto repair', 'voice AI', 'appointment booking'],

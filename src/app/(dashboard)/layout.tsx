@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <ToastProvider>
       <BusinessProvider>
-        <div className="flex h-screen overflow-hidden" style={{ background: '#080e10' }}>
+        <div className="flex h-screen overflow-hidden" style={{ background: '#1c1917' }}>
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
             <Navbar onMenuClick={() => setSidebarOpen(true)} />
