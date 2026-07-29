@@ -127,10 +127,16 @@ An audit of the unauthenticated voice path surfaced four defects, all now closed
   Both clients now close through one path; the embed had no drop handler at all.
 - **Write-only config.** `max_call_duration` was collected, validated and persisted but read
   by nothing, so a runaway call was bounded only by the caller hanging up. Now enforced.
+- **Premature hangups.** ICE `disconnected` was treated as terminal, but the spec defines it
+  as *transient* — it usually self-heals after a WiFi handover or packet loss. Both clients
+  killed the call instantly. Now an 8s grace window; only `failed` ends immediately.
+- **Orphaned conversations.** No client code can report a tab close, crash or dead network —
+  the page just stops running. An hourly cron sweeps anything left `active` past a threshold.
 
-Backed by **34 assertions** (`npm run check`) over pure scheduling, allowlist and
-schema-contract logic — no DB, no framework. Each suite was verified to *fail* against the
-pre-fix behaviour, including the `notshop.com` vs `*.shop.com` suffix-confusion case.
+Backed by **40 assertions** (`npm run check`) over pure scheduling, allowlist, schema-contract
+and lifecycle logic — no DB, no framework. Each suite was verified to *fail* against the
+pre-fix behaviour, including the `notshop.com` vs `*.shop.com` suffix-confusion case and a
+cross-file invariant that stops the sweeper from ever closing a live call.
 
 ## Known gaps (honest list)
 
@@ -139,8 +145,7 @@ pre-fix behaviour, including the `notshop.com` vs `*.shop.com` suffix-confusion 
   input transcription for real user text.
 - Rate limiting is **per tenant, not per IP** — it protects a business's spend but won't stop
   an attack spread thinly across many businesses.
-- A **tab close** mid-call still leaves a row open; an in-flight `fetch` survives SPA
-  navigation but not unload. Needs `navigator.sendBeacon` on `pagehide`.
+- A drop past the grace window **ends the call**; there's no ICE-restart reconnect.
 - Coverage is limited to pure logic; no integration or E2E tests.
 
 ## Top future improvements

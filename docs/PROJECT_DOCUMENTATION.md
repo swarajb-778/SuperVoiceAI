@@ -751,6 +751,16 @@ exports `OPTIONS` for preflight.
 - Returns the entire ~700-line `widget.js` as `application/javascript` with `no-cache` +
   wildcard CORS.
 
+### `GET /api/cron/close-stale-conversations`
+- **Auth:** `Authorization: Bearer $CRON_SECRET`. Returns **401** when the header is absent
+  or wrong, and also when `CRON_SECRET` is unset — it fails closed rather than becoming
+  publicly runnable if the variable is missing in an environment.
+- **Does:** flips conversations still `active` past `STALE_CONVERSATION_MS` (2h) to
+  `abandoned`. Idempotent — closed rows no longer match.
+- **Returns:** `{ swept, olderThanMinutes }`; **500** on a database error.
+- **Scheduled** hourly by `vercel.json`. Exists because no client-side event can report a
+  tab close, crash or dead network.
+
 ---
 
 ## 15. The service layer — every function
@@ -1238,12 +1248,11 @@ section.
 4. **Rate limiting is per tenant, not per IP.** The limiter counts new conversations per
    business per minute, which protects a tenant's model spend but won't stop an attack spread
    thinly across many businesses. Move to an IP-keyed store if that appears.
-5. **A tab close mid-call still leaves a row open.** Component unmount now closes the
-   conversation, but an in-flight `fetch` survives SPA navigation and not page unload — a
-   true tab close needs `navigator.sendBeacon` on `pagehide`.
-6. **Test coverage is limited to pure logic** (34 assertions over scheduling, allowlist
-   matching and schema contracts). No integration or E2E coverage; the voice path is still
-   verified manually via the Test-Live tab and the demo site.
+5. **A drop past the grace window ends the call.** ICE `disconnected` is given 8s to recover,
+   but there is no ICE-restart/renegotiation reconnect beyond that.
+6. **Test coverage is limited to pure logic** (40 assertions over scheduling, allowlist
+   matching, schema contracts and conversation lifecycle). No integration or E2E coverage;
+   the voice path is still verified manually via the Test-Live tab and the demo site.
 7. **`Auto-Repair/` uses a different, newer stack** (Next 16 / React 19 / Tailwind 4) than the
    main app — keep that in mind if you try to merge them.
 
@@ -1260,6 +1269,8 @@ check. Worth reading as a record of how the failure modes were reasoned about:
 | **Lost counter updates** | Read-then-write increments interleaved under concurrent widget loads; `total_interactions` was rendered but never written | Atomic SQL increments (`migrations/0001_widget_counters.sql`) |
 | **Zombie conversations** — dropped calls stayed `active` forever and depressed the conversion rate | The React hook had two divergent exits: `disconnect()` closed the row, the ICE handler only reset local UI. The embed had no drop handler at all. `abandoned` was a valid status, a UI filter option and had a colour — written by nothing | Both clients route every exit through one `closeConversation(status)`; a closing guard stops teardown-triggered ICE events from overwriting `completed`, and the conversation id is read from the store because the once-registered ICE handler captured a stale closure |
 | **Write-only `max_call_duration`** | Collected by the form, bounded by Zod, persisted per agent — and read by no runtime path | Returned by the session route and enforced as a hangup by both clients, timed from media flowing rather than from the click |
+| **Premature hangups** on a recoverable blip | ICE `disconnected` was treated as terminal, but the spec defines it as transient — it commonly self-heals after a WiFi handover or packet burst. Both clients ended the call the instant it appeared | `disconnected` starts an 8s grace window and only ends the call if unhealed; recovery cancels it. `failed` stays terminal. Deliberately not a reconnect — no ICE restart, just not killing a call that would have survived |
+| **Orphaned conversations** no client could ever close | A tab close, browser crash, suspended laptop or dead network stops the page executing — there is no event left to fire | Hourly Vercel cron (`/api/cron/close-stale-conversations`) sweeps rows still `active` past a threshold. Chosen over `sendBeacon` on `pagehide`, which only covers the case the browser announces and false-positives on bfcache and mobile backgrounding |
 
 Two details worth calling out, because they're the parts that are easy to get subtly wrong:
 - The allowlist **fails open when unset** (so enabling it can't break existing tenants) but
@@ -1570,13 +1581,16 @@ public routes, per-tenant session rate limiting, atomic widget counters, the dou
 + timezone fixes in `getAvailableSlots`, abandoned-call closure, and `max_call_duration`
 enforcement.
 
+Also done: ICE recovery grace before declaring a drop, and the hourly sweeper for
+conversations no client could close.
+
 **Still open:**
 - **Per-IP limiting.** The current limiter is per tenant, which protects a business's spend
   but not against an attack fanned out across many businesses. Needs an IP-keyed store.
+- **A true reconnect.** A drop past the 8s grace window ends the call; recovering it would
+  need `restartIce()` plus renegotiation through the SDP proxy.
 - **Structured logging + error tracking.** Replace `console.error` with a real logger and a
-  Sentry-style tracker; add **retries/backoff** on the tool round-trip and a **reconnect**
-  path (today a drop ends the call cleanly rather than attempting to re-establish it).
-- **`sendBeacon` on `pagehide`** so a tab close closes the conversation row like an unmount does.
+  Sentry-style tracker; add **retries/backoff** on the tool round-trip.
 - **Extend the allowlist to `/api/widget/config`.** Currently enforced on the two routes that
   cost money or write data; config is read-only and low-risk, but it leaks business name/city.
 
