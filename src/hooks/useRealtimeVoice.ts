@@ -3,6 +3,9 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { useVoiceStore } from '@/store/voice';
 
+/** How long an ICE 'disconnected' state may persist before the call is treated as dropped. */
+const ICE_RECOVERY_GRACE_MS = 8000;
+
 interface UseRealtimeVoiceOptions {
   businessId: string;
   onConversationEnd?: (conversationId: string) => void;
@@ -29,6 +32,7 @@ export function useRealtimeVoice({ businessId, onConversationEnd }: UseRealtimeV
   const assistantMessageIdRef = useRef<string | null>(null);
   const pendingSavesRef = useRef<Promise<unknown>[]>([]);
   const maxDurationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const iceGraceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closingRef = useRef(false);
 
   const connect = useCallback(async () => {
@@ -103,10 +107,34 @@ await handleRealtimeEvent(event, convId, businessId);
       };
 
       pc.oniceconnectionstatechange = () => {
-        if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed') {
-          // Transport dropped without a hangup: close the row as abandoned instead of
-          // leaving it 'active' indefinitely. No-ops if we are already closing.
+        const state = pc.iceConnectionState;
+
+        // 'disconnected' is transient per the WebRTC spec — connectivity checks are failing
+        // but the session commonly recovers on its own (WiFi handover, a burst of packet
+        // loss). Treating it as terminal hangs up on callers who were about to reconnect,
+        // so it only ends the call if it hasn't healed within the grace window. 'failed'
+        // is terminal and ends immediately.
+        if (state === 'connected' || state === 'completed') {
+          if (iceGraceTimerRef.current) {
+            clearTimeout(iceGraceTimerRef.current);
+            iceGraceTimerRef.current = null;
+          }
+          return;
+        }
+
+        if (state === 'failed') {
           void closeConversation('abandoned');
+          return;
+        }
+
+        if (state === 'disconnected' && !iceGraceTimerRef.current) {
+          iceGraceTimerRef.current = setTimeout(() => {
+            iceGraceTimerRef.current = null;
+            const current = pcRef.current?.iceConnectionState;
+            if (current === 'disconnected' || current === 'failed') {
+              void closeConversation('abandoned');
+            }
+          }, ICE_RECOVERY_GRACE_MS);
         }
       };
 
@@ -304,6 +332,10 @@ await handleRealtimeEvent(event, convId, businessId);
     if (maxDurationTimerRef.current) {
       clearTimeout(maxDurationTimerRef.current);
       maxDurationTimerRef.current = null;
+    }
+    if (iceGraceTimerRef.current) {
+      clearTimeout(iceGraceTimerRef.current);
+      iceGraceTimerRef.current = null;
     }
     localStreamRef.current?.getTracks().forEach((t) => t.stop());
     localStreamRef.current = null;

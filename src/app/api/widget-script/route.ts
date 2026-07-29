@@ -27,6 +27,9 @@ export async function GET(_req: NextRequest) {
   var waveInterval = null;
   var pulseAnimFrame = null;
   var maxDurationTimer = null;
+  var iceGraceTimer = null;
+  /* How long ICE may sit in 'disconnected' before the call is treated as dropped. */
+  var ICE_RECOVERY_GRACE_MS = 8000;
   var APP_URL = '${appUrl}';
 
   /* ─── Public API ─────────────────────────────────────── */
@@ -261,9 +264,32 @@ export async function GET(_req: NextRequest) {
       /* The transport can drop without the caller hanging up (network loss, sleep). Close
          the row as abandoned and return the panel to idle rather than stranding both. */
       pc.oniceconnectionstatechange = function() {
-        if (pc && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed')) {
+        if (!pc) return;
+        var state = pc.iceConnectionState;
+
+        /* 'disconnected' is transient per the WebRTC spec and usually self-heals (WiFi
+           handover, a burst of packet loss). Ending the call on it hangs up on callers who
+           were about to reconnect, so it only closes if unhealed after the grace window.
+           'failed' is terminal. */
+        if (state === 'connected' || state === 'completed') {
+          if (iceGraceTimer) { clearTimeout(iceGraceTimer); iceGraceTimer = null; }
+          return;
+        }
+
+        if (state === 'failed') {
           endVoice('abandoned');
           showIdle();
+          return;
+        }
+
+        if (state === 'disconnected' && !iceGraceTimer) {
+          iceGraceTimer = setTimeout(function() {
+            iceGraceTimer = null;
+            if (pc && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed')) {
+              endVoice('abandoned');
+              showIdle();
+            }
+          }, ICE_RECOVERY_GRACE_MS);
         }
       };
 
@@ -338,6 +364,7 @@ export async function GET(_req: NextRequest) {
   function endVoice(status) {
     stopWaveAnimation();
     if (maxDurationTimer) { clearTimeout(maxDurationTimer); maxDurationTimer = null; }
+    if (iceGraceTimer) { clearTimeout(iceGraceTimer); iceGraceTimer = null; }
     var dur = callStartTime ? Math.round((Date.now() - callStartTime) / 1000) : null;
     callStartTime = null;
     if (localStream) { localStream.getTracks().forEach(function(t) { t.stop(); }); localStream = null; }
