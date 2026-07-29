@@ -1238,11 +1238,12 @@ section.
 4. **Rate limiting is per tenant, not per IP.** The limiter counts new conversations per
    business per minute, which protects a tenant's model spend but won't stop an attack spread
    thinly across many businesses. Move to an IP-keyed store if that appears.
-5. **`max_call_duration`** is stored per agent but not enforced as an auto-hangup, so a
-   runaway call is bounded only by the caller hanging up.
-6. **Test coverage is limited to pure logic** (24 assertions over scheduling + allowlist
-   matching). No integration or E2E coverage; the voice path is still verified manually via
-   the Test-Live tab and the demo site.
+5. **A tab close mid-call still leaves a row open.** Component unmount now closes the
+   conversation, but an in-flight `fetch` survives SPA navigation and not page unload — a
+   true tab close needs `navigator.sendBeacon` on `pagehide`.
+6. **Test coverage is limited to pure logic** (34 assertions over scheduling, allowlist
+   matching and schema contracts). No integration or E2E coverage; the voice path is still
+   verified manually via the Test-Live tab and the demo site.
 7. **`Auto-Repair/` uses a different, newer stack** (Next 16 / React 19 / Tailwind 4) than the
    main app — keep that in mind if you try to merge them.
 
@@ -1257,6 +1258,8 @@ check. Worth reading as a record of how the failure modes were reasoned about:
 | **Timezone mismatch** — booked times never matched the grid | `toTimeString()` reads the *server's* wall clock; on a UTC host a 10:00 New York booking produced `14:00`. The day window was timezone-naive too, misfiling bookings near local midnight | Times projected into the business's zone with `Intl`; day window widened then filtered by zone-projected calendar date; day-of-week read from the calendar date rather than parsed as an instant |
 | **Unauthenticated abuse** — anyone with a `businessId` could spend a tenant's model budget | `allowed_domains` existed in the schema but no code path read it | Both public routes enforce the allowlist (bare host / URL / `*.wildcard`, port- and case-insensitive); session creation sheds past 20/min per tenant with `429` + `Retry-After` |
 | **Lost counter updates** | Read-then-write increments interleaved under concurrent widget loads; `total_interactions` was rendered but never written | Atomic SQL increments (`migrations/0001_widget_counters.sql`) |
+| **Zombie conversations** — dropped calls stayed `active` forever and depressed the conversion rate | The React hook had two divergent exits: `disconnect()` closed the row, the ICE handler only reset local UI. The embed had no drop handler at all. `abandoned` was a valid status, a UI filter option and had a colour — written by nothing | Both clients route every exit through one `closeConversation(status)`; a closing guard stops teardown-triggered ICE events from overwriting `completed`, and the conversation id is read from the store because the once-registered ICE handler captured a stale closure |
+| **Write-only `max_call_duration`** | Collected by the form, bounded by Zod, persisted per agent — and read by no runtime path | Returned by the session route and enforced as a hangup by both clients, timed from media flowing rather than from the click |
 
 Two details worth calling out, because they're the parts that are easy to get subtly wrong:
 - The allowlist **fails open when unset** (so enabling it can't break existing tenants) but
@@ -1563,17 +1566,17 @@ Concrete next steps, each tied to a specific gap in the current code. Ordered by
 ### 30.1 Reliability & security hardening
 
 **Done** (see [27.1](#271-closed-by-the-hardening-pass)): origin allowlist enforced on both
-public routes, per-tenant session rate limiting, atomic widget counters, and the
-double-booking + timezone fixes in `getAvailableSlots`.
+public routes, per-tenant session rate limiting, atomic widget counters, the double-booking
++ timezone fixes in `getAvailableSlots`, abandoned-call closure, and `max_call_duration`
+enforcement.
 
 **Still open:**
 - **Per-IP limiting.** The current limiter is per tenant, which protects a business's spend
   but not against an attack fanned out across many businesses. Needs an IP-keyed store.
 - **Structured logging + error tracking.** Replace `console.error` with a real logger and a
-  Sentry-style tracker; add **retries/backoff** on the tool round-trip and a **reconnect** path
-  if the data channel drops mid-call.
-- **Enforce `max_call_duration`.** The agent field exists; wire it to auto-hang-up so runaway
-  calls don't rack up cost.
+  Sentry-style tracker; add **retries/backoff** on the tool round-trip and a **reconnect**
+  path (today a drop ends the call cleanly rather than attempting to re-establish it).
+- **`sendBeacon` on `pagehide`** so a tab close closes the conversation row like an unmount does.
 - **Extend the allowlist to `/api/widget/config`.** Currently enforced on the two routes that
   cost money or write data; config is read-only and low-risk, but it leaks business name/city.
 

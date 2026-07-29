@@ -120,18 +120,27 @@ An audit of the unauthenticated voice path surfaced four defects, all now closed
 - **Lost counter updates.** Widget counters used a read-then-write that dropped concurrent
   increments; `total_interactions` was rendered but never written at all. Both are now
   atomic SQL increments.
+- **Zombie conversations.** A dropped call only reset local UI state, so the row stayed
+  `active` **forever** — even though `abandoned` is a valid status, a Conversations filter
+  option, and has a colour assigned. Because analytics counts all conversations as the
+  conversion denominator, every dropped call permanently understated the reported rate.
+  Both clients now close through one path; the embed had no drop handler at all.
+- **Write-only config.** `max_call_duration` was collected, validated and persisted but read
+  by nothing, so a runaway call was bounded only by the caller hanging up. Now enforced.
 
-Backed by **24 assertions** (`npm run check`) over the pure scheduling and allowlist logic —
-no DB, no framework — including the `notshop.com` vs `*.shop.com` suffix-confusion case.
+Backed by **34 assertions** (`npm run check`) over pure scheduling, allowlist and
+schema-contract logic — no DB, no framework. Each suite was verified to *fail* against the
+pre-fix behaviour, including the `notshop.com` vs `*.shop.com` suffix-confusion case.
 
 ## Known gaps (honest list)
 
 - **README says Claude; code uses OpenAI Realtime** — provider abstraction is future work.
 - **User speech isn't transcribed** by default (shows `🎤 Voice message`); enable Whisper
   input transcription for real user text.
-- `max_call_duration` is stored per agent but not enforced as an auto-hangup.
 - Rate limiting is **per tenant, not per IP** — it protects a business's spend but won't stop
   an attack spread thinly across many businesses.
+- A **tab close** mid-call still leaves a row open; an in-flight `fetch` survives SPA
+  navigation but not unload. Needs `navigator.sendBeacon` on `pagehide`.
 - Coverage is limited to pure logic; no integration or E2E tests.
 
 ## Top future improvements
