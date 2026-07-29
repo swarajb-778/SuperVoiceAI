@@ -41,8 +41,8 @@ export default function HomePage() {
   }, []);
 
   const initWidget = () => {
-    if (typeof window !== 'undefined' && (window as any).CarBot && BUSINESS_ID) {
-      (window as any).CarBot.init({
+    if (typeof window !== 'undefined' && (window as any).SuperVoiceAI && BUSINESS_ID) {
+      (window as any).SuperVoiceAI.init({
         businessId: BUSINESS_ID,
         position: 'bottom-right',
       });
