@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminSupabase } from '@/lib/supabase/admin';
 import { getAvailableSlots } from '@/services/appointments';
+import { isOriginAllowed, requestOrigin } from '@/lib/security';
 import type { Business } from '@/types';
 
 export async function OPTIONS() {
@@ -32,6 +33,20 @@ export async function POST(req: NextRequest) {
 
     if (!business) {
       return NextResponse.json({ error: 'Business not found' }, { status: 404 });
+    }
+
+    // Unauthenticated route that writes tenant data (appointments, leads), so it is held to
+    // the same origin allowlist as session creation rather than trusting the caller.
+    const { data: widget } = await supabase
+      .from('embedded_widgets')
+      .select('allowed_domains')
+      .eq('business_id', businessId)
+      .eq('is_active', true)
+      .limit(1)
+      .maybeSingle();
+
+    if (!isOriginAllowed(requestOrigin(req.headers), widget?.allowed_domains)) {
+      return NextResponse.json({ error: 'Origin not authorized' }, { status: 403 });
     }
 
     const biz = business as Business;
