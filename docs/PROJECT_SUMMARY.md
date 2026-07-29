@@ -13,8 +13,8 @@ tag into its website. Visitors then click a floating phone button and **talk to 
 voice** — it answers questions, quotes real prices, checks the real schedule, and **books
 appointments** into the owner's dashboard. 24/7, never misses a call.
 
-, but every piece of business data is dynamic — the same platform works for
-healthcare, restaurants, salons, dealerships, any appointment-driven business.
+Every piece of business data is dynamic, so the same platform serves auto repair,
+healthcare, restaurants, salons, dealerships — any appointment-driven business.
 
 ## The one-sentence mental model
 
@@ -104,25 +104,43 @@ away from `/dashboard`.
 4. `npm i && npm run dev` (Node 20+) → sign up → Settings → configure business → create
    agent → Test Live → copy widget embed code.
 
+## Recently fixed (audit → fix → regression check)
+
+An audit of the unauthenticated voice path surfaced four defects, all now closed:
+
+- **Double-booking (high severity).** `getAvailableSlots` ran with the anon Supabase client
+  from an unauthenticated route. `appointments` has no anon SELECT policy, so the query
+  returned **zero rows silently** — every slot looked free and the AI confirmed times that
+  were already taken. Fixed by injecting a privileged client at that call site.
+- **Timezone correctness.** Booked times were derived from the *server's* wall clock and
+  compared against a grid built from the business's local hours; on a UTC host a 10:00 New
+  York booking masked `14:00` and matched nothing. Now projected via `Intl` (DST-aware).
+- **Unauthenticated abuse.** `allowed_domains` existed in the schema but was read by no code
+  path. Both public routes now enforce it, and session creation is rate-limited per tenant.
+- **Lost counter updates.** Widget counters used a read-then-write that dropped concurrent
+  increments; `total_interactions` was rendered but never written at all. Both are now
+  atomic SQL increments.
+
+Backed by **24 assertions** (`npm run check`) over the pure scheduling and allowlist logic —
+no DB, no framework — including the `notshop.com` vs `*.shop.com` suffix-confusion case.
+
 ## Known gaps (honest list)
 
 - **README says Claude; code uses OpenAI Realtime** — provider abstraction is future work.
 - **User speech isn't transcribed** by default (shows `🎤 Voice message`); enable Whisper
   input transcription for real user text.
-- **`allowed_domains` isn't enforced** and there's **no rate limiting** — anyone with a
-  `businessId` can open sessions (burns the owner's OpenAI minutes).
-- Slot times use the **server's timezone**, not the business's.
-- `total_interactions` is displayed but never incremented; `max_call_duration` isn't
-  enforced; no automated tests.
+- `max_call_duration` is stored per agent but not enforced as an auto-hangup.
+- Rate limiting is **per tenant, not per IP** — it protects a business's spend but won't stop
+  an attack spread thinly across many businesses.
+- Coverage is limited to pure logic; no integration or E2E tests.
 
 ## Top future improvements
 
-1. **Harden:** rate limiting, allowed-domains check, retries/reconnect, call-duration cap.
-2. **Real telephony (Twilio):** answer actual phone calls, not just the web widget — this is
+1. **Real telephony (Twilio):** answer actual phone calls, not just the web widget — this is
    what the "never miss a call" promise really means.
-3. **AI quality:** user transcription, LLM-generated summaries/sentiment, RAG knowledge base,
+2. **AI quality:** user transcription, LLM-generated summaries/sentiment, RAG knowledge base,
    human handoff tool.
-4. **Post-call:** SMS/email confirmations + reminders, Google Calendar sync,
-   timezone-correct slots.
+3. **Post-call:** SMS/email confirmations + reminders, Google Calendar sync.
+4. **Harden further:** per-IP limiting, reconnect/retry on data-channel drop, call-duration cap.
 5. **Monetization:** Stripe billing + usage metering (Pro plan is "$49/mo — Coming Soon" with
    no billing code yet; Starter is free/self-hosted, bring-your-own-OpenAI-key).
