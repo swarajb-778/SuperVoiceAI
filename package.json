@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
+    "check:slots": "node scripts/check-slots.ts",
     "clear": "rm -rf node_modules package-lock.json .next"
   },
   "dependencies": {

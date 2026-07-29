@@ -97,7 +97,13 @@ export async function POST(req: NextRequest) {
           if (service) duration = service.duration_minutes;
         }
 
-        const slots = await getAvailableSlots(businessId, date, duration);
+        // Admin client + business timezone are required here: this route is unauthenticated,
+        // so the default anon client cannot read `appointments` under RLS and every slot
+        // would appear free.
+        const slots = await getAvailableSlots(businessId, date, duration, {
+          client: supabase,
+          timeZone: biz.timezone,
+        });
         result = {
           date,
           available_slots: slots,
