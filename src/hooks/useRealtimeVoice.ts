@@ -28,12 +28,15 @@ export function useRealtimeVoice({ businessId, onConversationEnd }: UseRealtimeV
   const startTimeRef = useRef<number | null>(null);
   const assistantMessageIdRef = useRef<string | null>(null);
   const pendingSavesRef = useRef<Promise<unknown>[]>([]);
+  const maxDurationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closingRef = useRef(false);
 
   const connect = useCallback(async () => {
     if (connectionState.status !== 'idle' && connectionState.status !== 'error') return;
 
     setConnectionState({ status: 'connecting' });
     clearTranscript();
+    closingRef.current = false;
 
     try {
       /* Phase 1: fetch session config from our backend */
@@ -74,6 +77,15 @@ export function useRealtimeVoice({ businessId, onConversationEnd }: UseRealtimeV
         setConnectionState({ status: 'listening' });
         /* Trigger the greeting */
         dc.send(JSON.stringify({ type: 'response.create' }));
+
+        // Enforce the agent's configured cap. Timed from the moment media is actually
+        // flowing, not from connect(), so a slow handshake doesn't eat the caller's budget.
+        const maxSeconds = Number(sessionData.maxCallDuration) || 0;
+        if (maxSeconds > 0) {
+          maxDurationTimerRef.current = setTimeout(() => {
+            void closeConversation('completed');
+          }, maxSeconds * 1000);
+        }
       };
 
       dc.onmessage = async (e) => {
@@ -92,7 +104,9 @@ await handleRealtimeEvent(event, convId, businessId);
 
       pc.oniceconnectionstatechange = () => {
         if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed') {
-          setConnectionState({ status: 'idle' });
+          // Transport dropped without a hangup: close the row as abandoned instead of
+          // leaving it 'active' indefinitely. No-ops if we are already closing.
+          void closeConversation('abandoned');
         }
       };
 
@@ -243,33 +257,54 @@ await handleRealtimeEvent(event, convId, businessId);
     }
   };
 
-  const disconnect = useCallback(async () => {
-    const convId = conversationId;
+  /**
+   * The single exit path for a call.
+   *
+   * `abandoned` is used when the transport dropped without the caller hanging up. Previously
+   * that path only reset local UI state, so the conversation row stayed 'active' forever —
+   * a status the schema and the Conversations filter both know about but nothing ever wrote.
+   * Those zombie rows also sit in the conversion-rate denominator, permanently understating it.
+   */
+  const closeConversation = useCallback(async (status: 'completed' | 'abandoned') => {
+    // A user hangup tears down the peer connection, which itself fires an ICE state change.
+    // Without this guard that second path would overwrite 'completed' with 'abandoned'.
+    if (closingRef.current) return;
+    closingRef.current = true;
+
+    // Read through the store rather than the closure: the ICE handler is registered once at
+    // connect time and would otherwise capture a stale (usually null) conversation id.
+    const convId = useVoiceStore.getState().conversationId;
     const duration = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : null;
 
     cleanup();
     setConnectionState({ status: 'idle' });
 
-    if (convId) {
-      // Wait for all in-flight message saves so sentiment derivation has data
-      await Promise.all(pendingSavesRef.current).catch(() => {});
-      pendingSavesRef.current = [];
+    if (!convId) return;
 
-      await fetch('/api/conversations', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          conversationId: convId,
-          updates: { status: 'completed', duration_seconds: duration },
-        }),
-      }).catch(console.error);
+    // Wait for all in-flight message saves so sentiment derivation has data
+    await Promise.all(pendingSavesRef.current).catch(() => {});
+    pendingSavesRef.current = [];
 
-      onConversationEnd?.(convId);
-    }
+    await fetch('/api/conversations', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        conversationId: convId,
+        updates: { status, duration_seconds: duration },
+      }),
+    }).catch(console.error);
+
+    onConversationEnd?.(convId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversationId, onConversationEnd]);
+  }, [onConversationEnd]);
+
+  const disconnect = useCallback(() => closeConversation('completed'), [closeConversation]);
 
   const cleanup = () => {
+    if (maxDurationTimerRef.current) {
+      clearTimeout(maxDurationTimerRef.current);
+      maxDurationTimerRef.current = null;
+    }
     localStreamRef.current?.getTracks().forEach((t) => t.stop());
     localStreamRef.current = null;
     dcRef.current?.close();
@@ -291,8 +326,13 @@ await handleRealtimeEvent(event, convId, businessId);
 
   useEffect(() => {
     return () => {
-      cleanup();
+      // Navigating away mid-call is an abandon, not a completion. The guard inside makes
+      // this a no-op after a normal hangup.
+      // ponytail: an in-flight fetch survives SPA navigation but not a tab close; a real
+      // tab-close needs navigator.sendBeacon on pagehide. Add that if zombie rows persist.
+      void closeConversation('abandoned');
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

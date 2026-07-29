@@ -146,6 +146,9 @@ export async function POST(req: NextRequest) {
         model: 'gpt-realtime',
         systemPrompt,
         tools: REALTIME_TOOLS,
+        // Agents have always stored a max_call_duration, but nothing read it — a runaway
+        // call was bounded only by the caller hanging up. Clients enforce this as a hangup.
+        maxCallDuration: agentTyped?.max_call_duration ?? 600,
         turnDetection: {
           type: 'server_vad',
           threshold: sensitivity === 'low' ? 0.9 : sensitivity === 'high' ? 0.5 : 0.7,

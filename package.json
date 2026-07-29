@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "check": "npm run check:slots && npm run check:security",
+    "check": "npm run check:slots && npm run check:security && npm run check:schema",
     "check:slots": "node scripts/check-slots.ts",
     "check:security": "node scripts/check-security.ts",
+    "check:schema": "node scripts/check-schema-contract.ts",
     "clear": "rm -rf node_modules package-lock.json .next"
   },
   "dependencies": {
