@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminSupabase } from '@/lib/supabase/admin';
 import { buildSystemPrompt, REALTIME_TOOLS } from '@/ai/tools';
+import { isOriginAllowed, isOverSessionLimit, requestOrigin } from '@/lib/security';
 import type { Business, Agent, Service, BusinessHours } from '@/types';
 
 const CORS = {
@@ -36,6 +37,39 @@ export async function POST(req: NextRequest) {
 
       if (!business) {
         return NextResponse.json({ error: 'Business not found' }, { status: 404 });
+      }
+
+      // ── Guards ───────────────────────────────────────────────────────────
+      // This route is unauthenticated and starts a billed model session, so it is gated
+      // before any further work: RLS offers no protection without a session.
+
+      const { data: widget } = await supabase
+        .from('embedded_widgets')
+        .select('id, allowed_domains')
+        .eq('business_id', businessId)
+        .eq('is_active', true)
+        .limit(1)
+        .maybeSingle();
+
+      if (!isOriginAllowed(requestOrigin(req.headers), widget?.allowed_domains)) {
+        return NextResponse.json(
+          { error: 'This domain is not authorized to use this widget' },
+          { status: 403, headers: CORS }
+        );
+      }
+
+      const windowStart = new Date(Date.now() - 60_000).toISOString();
+      const { count: recentSessions } = await supabase
+        .from('conversations')
+        .select('*', { count: 'exact', head: true })
+        .eq('business_id', businessId)
+        .gte('created_at', windowStart);
+
+      if (isOverSessionLimit(recentSessions)) {
+        return NextResponse.json(
+          { error: 'Too many sessions started recently. Please try again shortly.' },
+          { status: 429, headers: { ...CORS, 'Retry-After': '60' } }
+        );
       }
 
       let agentQuery = supabase.from('agents').select('*').eq('is_active', true);
@@ -95,6 +129,12 @@ export async function POST(req: NextRequest) {
           event_type: 'conversation_started',
           event_data: { agent_id: agentTyped?.id, source: 'widget' },
         });
+
+        // A started session is the interaction the dashboard reports. This counter was
+        // rendered on the widget page but never incremented anywhere, so it always read 0.
+        if (widget?.id) {
+          await supabase.rpc('increment_widget_interactions', { p_widget_id: widget.id });
+        }
       }
 
       const sensitivity = agentTyped?.interrupt_sensitivity || 'medium';
@@ -106,6 +146,9 @@ export async function POST(req: NextRequest) {
         model: 'gpt-realtime',
         systemPrompt,
         tools: REALTIME_TOOLS,
+        // Agents have always stored a max_call_duration, but nothing read it — a runaway
+        // call was bounded only by the caller hanging up. Clients enforce this as a hangup.
+        maxCallDuration: agentTyped?.max_call_duration ?? 600,
         turnDetection: {
           type: 'server_vad',
           threshold: sensitivity === 'low' ? 0.9 : sensitivity === 'high' ? 0.5 : 0.7,

@@ -26,6 +26,10 @@ export async function GET(_req: NextRequest) {
   var muted = false;
   var waveInterval = null;
   var pulseAnimFrame = null;
+  var maxDurationTimer = null;
+  var iceGraceTimer = null;
+  /* How long ICE may sit in 'disconnected' before the call is treated as dropped. */
+  var ICE_RECOVERY_GRACE_MS = 8000;
   var APP_URL = '${appUrl}';
 
   /* ─── Public API ─────────────────────────────────────── */
@@ -131,11 +135,11 @@ export async function GET(_req: NextRequest) {
     widget.querySelector('#supervoice-close').addEventListener('click', closeWidget);
     widget.querySelector('#supervoice-start-btn').addEventListener('click', startVoice);
     widget.querySelector('#supervoice-mute-btn').addEventListener('click', toggleMute);
-    widget.querySelector('#supervoice-end-btn').addEventListener('click', function() { endVoice(); showIdle(); });
+    widget.querySelector('#supervoice-end-btn').addEventListener('click', function() { endVoice('completed'); showIdle(); });
   }
 
   function closeWidget() {
-    endVoice();
+    endVoice('completed');
     if (widget) {
       widget.style.opacity = '0';
       widget.style.transform = 'translateY(16px) scale(0.95)';
@@ -257,6 +261,38 @@ export async function GET(_req: NextRequest) {
       audioEl.autoplay = true;
       pc.ontrack = function(e) { audioEl.srcObject = e.streams[0]; };
 
+      /* The transport can drop without the caller hanging up (network loss, sleep). Close
+         the row as abandoned and return the panel to idle rather than stranding both. */
+      pc.oniceconnectionstatechange = function() {
+        if (!pc) return;
+        var state = pc.iceConnectionState;
+
+        /* 'disconnected' is transient per the WebRTC spec and usually self-heals (WiFi
+           handover, a burst of packet loss). Ending the call on it hangs up on callers who
+           were about to reconnect, so it only closes if unhealed after the grace window.
+           'failed' is terminal. */
+        if (state === 'connected' || state === 'completed') {
+          if (iceGraceTimer) { clearTimeout(iceGraceTimer); iceGraceTimer = null; }
+          return;
+        }
+
+        if (state === 'failed') {
+          endVoice('abandoned');
+          showIdle();
+          return;
+        }
+
+        if (state === 'disconnected' && !iceGraceTimer) {
+          iceGraceTimer = setTimeout(function() {
+            iceGraceTimer = null;
+            if (pc && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed')) {
+              endVoice('abandoned');
+              showIdle();
+            }
+          }, ICE_RECOVERY_GRACE_MS);
+        }
+      };
+
       localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
       localStream.getTracks().forEach(function(t) { pc.addTrack(t, localStream); });
 
@@ -268,6 +304,16 @@ export async function GET(_req: NextRequest) {
         setCallState('listening');
         /* Trigger the greeting */
         dc.send(JSON.stringify({ type: 'response.create' }));
+
+        /* Enforce the agent's configured cap, timed from media flowing rather than from
+           the click, so a slow handshake doesn't consume the caller's budget. */
+        var maxSeconds = Number(sessionData.maxCallDuration) || 0;
+        if (maxSeconds > 0) {
+          maxDurationTimer = setTimeout(function() {
+            endVoice('completed');
+            showIdle();
+          }, maxSeconds * 1000);
+        }
       };
       dc.onmessage = function(e) {
         try { handleEvent(JSON.parse(e.data)); } catch(_) {}
@@ -312,8 +358,13 @@ export async function GET(_req: NextRequest) {
     }
   }
 
-  function endVoice() {
+  /* status: 'completed' when the caller hangs up, 'abandoned' when the transport drops.
+     Previously this always wrote 'completed' and nothing handled a dropped connection, so
+     those rows stayed 'active' forever and sat in the conversion-rate denominator. */
+  function endVoice(status) {
     stopWaveAnimation();
+    if (maxDurationTimer) { clearTimeout(maxDurationTimer); maxDurationTimer = null; }
+    if (iceGraceTimer) { clearTimeout(iceGraceTimer); iceGraceTimer = null; }
     var dur = callStartTime ? Math.round((Date.now() - callStartTime) / 1000) : null;
     callStartTime = null;
     if (localStream) { localStream.getTracks().forEach(function(t) { t.stop(); }); localStream = null; }
@@ -321,8 +372,8 @@ export async function GET(_req: NextRequest) {
     if (pc) { try { pc.close(); } catch(_) {} pc = null; }
     if (conversationId) {
       var cid = conversationId;
-      conversationId = null;
-      var updates = { status: 'completed' };
+      conversationId = null; /* also guards the second call triggered by our own teardown */
+      var updates = { status: status || 'completed' };
       if (dur && dur > 0) updates.duration_seconds = dur;
       Promise.all(pendingSaves).then(function() {
         pendingSaves = [];

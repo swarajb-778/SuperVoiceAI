@@ -751,6 +751,16 @@ exports `OPTIONS` for preflight.
 - Returns the entire ~700-line `widget.js` as `application/javascript` with `no-cache` +
   wildcard CORS.
 
+### `GET /api/cron/close-stale-conversations`
+- **Auth:** `Authorization: Bearer $CRON_SECRET`. Returns **401** when the header is absent
+  or wrong, and also when `CRON_SECRET` is unset — it fails closed rather than becoming
+  publicly runnable if the variable is missing in an environment.
+- **Does:** flips conversations still `active` past `STALE_CONVERSATION_MS` (2h) to
+  `abandoned`. Idempotent — closed rows no longer match.
+- **Returns:** `{ swept, olderThanMinutes }`; **500** on a database error.
+- **Scheduled** hourly by `vercel.json`. Exists because no client-side event can report a
+  tab close, crash or dead network.
+
 ---
 
 ## 15. The service layer — every function
@@ -1232,18 +1242,41 @@ section.
 2. **User speech isn't transcribed by default.** GA Realtime needs input transcription
    (Whisper) enabled via `session.update` to capture user text; today user turns show as
    `🎤 Voice message`, which also limits sentiment quality.
-3. **Slot timezone.** `getAvailableSlots` compares times in the *server's* timezone, not the
-   business's `timezone`. Fine single-region; normalize for multi-timezone.
-4. **Secrets hygiene.** `.env.local` is git-ignored and **not committed** (verified), so keys
+3. **Secrets hygiene.** `.env.local` is git-ignored and **not committed** (verified), so keys
    aren't in the public repo. Still: the service-role key bypasses all RLS — treat it like a
    root password and rotate anything ever shared.
-5. **Open CORS.** `/api/*` allows any origin (required for the embed) — voice/tool endpoints are
-   callable by anyone who knows a `businessId`. The `allowed_domains` column on
-   `embedded_widgets` exists but **isn't enforced** yet; rate limiting is absent. Next
-   hardening steps.
-6. **No automated tests.** Verification is manual (the Test-Live tab + the demo site).
+4. **Rate limiting is per tenant, not per IP.** The limiter counts new conversations per
+   business per minute, which protects a tenant's model spend but won't stop an attack spread
+   thinly across many businesses. Move to an IP-keyed store if that appears.
+5. **A drop past the grace window ends the call.** ICE `disconnected` is given 8s to recover,
+   but there is no ICE-restart/renegotiation reconnect beyond that.
+6. **Test coverage is limited to pure logic** (40 assertions over scheduling, allowlist
+   matching, schema contracts and conversation lifecycle). No integration or E2E coverage;
+   the voice path is still verified manually via the Test-Live tab and the demo site.
 7. **`Auto-Repair/` uses a different, newer stack** (Next 16 / React 19 / Tailwind 4) than the
    main app — keep that in mind if you try to merge them.
+
+### 27.1 Closed by the hardening pass
+
+Four defects found by auditing the unauthenticated voice path, each fixed with a regression
+check. Worth reading as a record of how the failure modes were reasoned about:
+
+| Defect | Why it happened | Fix |
+|---|---|---|
+| **Double-booking** — the agent offered slots that were already taken | `getAvailableSlots` used the **anon** client, but its only caller is an unauthenticated route. `appointments` exposes no anon SELECT policy, so RLS returned **zero rows silently** and `bookedSlots` was always empty | Call site injects the admin client; the dashboard keeps the anon client, which is correct there because RLS grants owners their own rows |
+| **Timezone mismatch** — booked times never matched the grid | `toTimeString()` reads the *server's* wall clock; on a UTC host a 10:00 New York booking produced `14:00`. The day window was timezone-naive too, misfiling bookings near local midnight | Times projected into the business's zone with `Intl`; day window widened then filtered by zone-projected calendar date; day-of-week read from the calendar date rather than parsed as an instant |
+| **Unauthenticated abuse** — anyone with a `businessId` could spend a tenant's model budget | `allowed_domains` existed in the schema but no code path read it | Both public routes enforce the allowlist (bare host / URL / `*.wildcard`, port- and case-insensitive); session creation sheds past 20/min per tenant with `429` + `Retry-After` |
+| **Lost counter updates** | Read-then-write increments interleaved under concurrent widget loads; `total_interactions` was rendered but never written | Atomic SQL increments (`migrations/0001_widget_counters.sql`) |
+| **Zombie conversations** — dropped calls stayed `active` forever and depressed the conversion rate | The React hook had two divergent exits: `disconnect()` closed the row, the ICE handler only reset local UI. The embed had no drop handler at all. `abandoned` was a valid status, a UI filter option and had a colour — written by nothing | Both clients route every exit through one `closeConversation(status)`; a closing guard stops teardown-triggered ICE events from overwriting `completed`, and the conversation id is read from the store because the once-registered ICE handler captured a stale closure |
+| **Write-only `max_call_duration`** | Collected by the form, bounded by Zod, persisted per agent — and read by no runtime path | Returned by the session route and enforced as a hangup by both clients, timed from media flowing rather than from the click |
+| **Premature hangups** on a recoverable blip | ICE `disconnected` was treated as terminal, but the spec defines it as transient — it commonly self-heals after a WiFi handover or packet burst. Both clients ended the call the instant it appeared | `disconnected` starts an 8s grace window and only ends the call if unhealed; recovery cancels it. `failed` stays terminal. Deliberately not a reconnect — no ICE restart, just not killing a call that would have survived |
+| **Orphaned conversations** no client could ever close | A tab close, browser crash, suspended laptop or dead network stops the page executing — there is no event left to fire | Hourly Vercel cron (`/api/cron/close-stale-conversations`) sweeps rows still `active` past a threshold. Chosen over `sendBeacon` on `pagehide`, which only covers the case the browser announces and false-positives on bfcache and mobile backgrounding |
+
+Two details worth calling out, because they're the parts that are easy to get subtly wrong:
+- The allowlist **fails open when unset** (so enabling it can't break existing tenants) but
+  **fails closed when set** and the caller sends no usable origin.
+- Wildcard matching compares a dotted suffix plus the apex, not a bare `endsWith` — otherwise
+  `notshop.com` satisfies `*.shop.com`. That case is asserted explicitly.
 
 ---
 
@@ -1541,20 +1574,25 @@ change?"**
 
 Concrete next steps, each tied to a specific gap in the current code. Ordered by leverage.
 
-### 30.1 Reliability & security hardening (do first)
-- **Enforce `embedded_widgets.allowed_domains`.** The column exists but is never checked — any
-  site can embed any `businessId`. Validate the `Origin`/`Referer` in `/api/widget/config`,
-  `/api/realtime/session`, and `/api/realtime/tools`.
-- **Rate limiting & abuse protection** on all public `/api/*` routes (per-IP + per-`businessId`).
-  Today anyone with a `businessId` can open unlimited sessions and burn the owner's OpenAI
-  minutes. Add a cheap limiter (e.g. Upstash) and a per-business daily cap.
-- **Fix `total_interactions`.** It's displayed on the widget page but **never incremented** in
-  code (only `total_impressions` is). Increment it when a call actually starts.
+### 30.1 Reliability & security hardening
+
+**Done** (see [27.1](#271-closed-by-the-hardening-pass)): origin allowlist enforced on both
+public routes, per-tenant session rate limiting, atomic widget counters, the double-booking
++ timezone fixes in `getAvailableSlots`, abandoned-call closure, and `max_call_duration`
+enforcement.
+
+Also done: ICE recovery grace before declaring a drop, and the hourly sweeper for
+conversations no client could close.
+
+**Still open:**
+- **Per-IP limiting.** The current limiter is per tenant, which protects a business's spend
+  but not against an attack fanned out across many businesses. Needs an IP-keyed store.
+- **A true reconnect.** A drop past the 8s grace window ends the call; recovering it would
+  need `restartIce()` plus renegotiation through the SDP proxy.
 - **Structured logging + error tracking.** Replace `console.error` with a real logger and a
-  Sentry-style tracker; add **retries/backoff** on the tool round-trip and a **reconnect** path
-  if the data channel drops mid-call.
-- **Enforce `max_call_duration`.** The agent field exists; wire it to auto-hang-up so runaway
-  calls don't rack up cost.
+  Sentry-style tracker; add **retries/backoff** on the tool round-trip.
+- **Extend the allowlist to `/api/widget/config`.** Currently enforced on the two routes that
+  cost money or write data; config is read-only and low-risk, but it leaks business name/city.
 
 ### 30.2 The big feature: real telephony
 The tagline is *"never miss a call"* — but today it only answers a **web widget**, not an actual

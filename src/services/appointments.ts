@@ -1,4 +1,6 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
+import { bookedSlotSet, buildSlotGrid, dayOfWeekForDate } from '@/services/slots';
 import type { Appointment } from '@/types';
 import type { AppointmentFormData } from '@/validations';
 
@@ -142,56 +144,43 @@ export async function deleteAppointment(appointmentId: string): Promise<void> {
 export async function getAvailableSlots(
   businessId: string,
   date: string,
-  durationMinutes: number = 60
+  durationMinutes: number = 60,
+  opts?: { client?: SupabaseClient; timeZone?: string }
 ): Promise<string[]> {
-  const supabase = createClient();
-
-  const dayOfWeek = new Date(date).getDay();
+  // Callers without an authenticated session (the AI tool route) MUST inject a privileged
+  // client: `appointments` has no anon SELECT policy, so the anon client returns zero rows
+  // and every slot looks free — silently double-booking. The dashboard's own client is
+  // correct here, since RLS grants owners their own rows.
+  const supabase = opts?.client ?? createClient();
+  const timeZone = opts?.timeZone || 'UTC';
 
   const { data: hours } = await supabase
     .from('business_hours')
     .select('*')
     .eq('business_id', businessId)
-    .eq('day_of_week', dayOfWeek)
+    .eq('day_of_week', dayOfWeekForDate(date))
     .eq('is_open', true)
     .single();
 
   if (!hours || !hours.open_time || !hours.close_time) return [];
 
+  // Widen the window by a day on each side so the business-local day is fully covered
+  // regardless of UTC offset, then filter precisely by zone-projected calendar date.
+  const dayBefore = new Date(`${date}T00:00:00Z`);
+  dayBefore.setUTCDate(dayBefore.getUTCDate() - 1);
+  const dayAfter = new Date(`${date}T00:00:00Z`);
+  dayAfter.setUTCDate(dayAfter.getUTCDate() + 2);
+
   const { data: existing } = await supabase
     .from('appointments')
     .select('scheduled_at, duration_minutes')
     .eq('business_id', businessId)
-    .gte('scheduled_at', `${date}T00:00:00`)
-    .lte('scheduled_at', `${date}T23:59:59`)
+    .gte('scheduled_at', dayBefore.toISOString())
+    .lte('scheduled_at', dayAfter.toISOString())
     .not('status', 'eq', 'cancelled');
 
-  const bookedSlots = new Set<string>();
-  (existing || []).forEach((appt) => {
-    const start = new Date(appt.scheduled_at);
-    const slot = start.toTimeString().substring(0, 5);
-    bookedSlots.add(slot);
-    const blockSlots = Math.ceil(appt.duration_minutes / 30);
-    for (let i = 1; i < blockSlots; i++) {
-      const blocked = new Date(start.getTime() + i * 30 * 60000);
-      bookedSlots.add(blocked.toTimeString().substring(0, 5));
-    }
-  });
+  const booked = bookedSlotSet(existing || [], date, timeZone);
 
-  const slots: string[] = [];
-  const [openH, openM] = hours.open_time.split(':').map(Number);
-  const [closeH, closeM] = hours.close_time.split(':').map(Number);
-  const openMinutes = openH * 60 + openM;
-  const closeMinutes = closeH * 60 + closeM;
-
-  for (let m = openMinutes; m + durationMinutes <= closeMinutes; m += 30) {
-    const h = Math.floor(m / 60).toString().padStart(2, '0');
-    const min = (m % 60).toString().padStart(2, '0');
-    const timeStr = `${h}:${min}`;
-    if (!bookedSlots.has(timeStr)) {
-      slots.push(timeStr);
-    }
-  }
-
-  return slots;
+  return buildSlotGrid(hours.open_time, hours.close_time, durationMinutes)
+    .filter((slot) => !booked.has(slot));
 }

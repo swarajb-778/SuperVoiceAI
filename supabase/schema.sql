@@ -412,3 +412,21 @@ begin
   on conflict (business_id, day_of_week) do nothing;
 end;
 $$ language plpgsql security definer;
+
+-- =============================================
+-- ATOMIC WIDGET COUNTERS
+-- (also shipped as migrations/0001_widget_counters.sql for existing databases)
+-- =============================================
+create or replace function increment_widget_impressions(p_widget_id uuid)
+returns void as $$
+  update embedded_widgets
+     set total_impressions = total_impressions + 1
+   where id = p_widget_id;
+$$ language sql security definer;
+
+create or replace function increment_widget_interactions(p_widget_id uuid)
+returns void as $$
+  update embedded_widgets
+     set total_interactions = total_interactions + 1
+   where id = p_widget_id;
+$$ language sql security definer;

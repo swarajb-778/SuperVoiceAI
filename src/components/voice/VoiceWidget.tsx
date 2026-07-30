@@ -20,7 +20,7 @@ interface VoiceWidgetProps {
 
 export function VoiceWidget({
   businessId,
-  businessName = 'Auto Repair',
+  businessName = 'Auto Repair', 
   primaryColor = '#f59e0b',
   position = 'bottom-right',
   greeting,

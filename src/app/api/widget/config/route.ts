@@ -39,10 +39,9 @@ export async function GET(req: NextRequest) {
     }
 
     if (widget) {
-      await supabase
-        .from('embedded_widgets')
-        .update({ total_impressions: (widget.total_impressions || 0) + 1 })
-        .eq('id', widget.id);
+      // Atomic increment: the previous read-then-write lost updates when widget loads
+      // overlapped, which is the normal case for an embedded script.
+      await supabase.rpc('increment_widget_impressions', { p_widget_id: widget.id });
     }
 
     const headers = new Headers();
